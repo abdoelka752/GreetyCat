@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greedycat.local/contracts/v1/errors.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "code", "path", "message", "retryable"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "code": {"enum": ["INVALID_JSON", "UNSUPPORTED_VERSION", "SCHEMA_INVALID", "TIME_ORDER", "PROBABILITY_SUM", "IDENTITY_MISMATCH", "UNCONFIRMED_OUTCOME", "MISSING_DATA", "EVENT_CONFLICT", "PREDICTION_IMMUTABLE", "TEMPORAL_LEAKAGE", "STALE_RESULT", "PROVENANCE_MISMATCH"]},
+    "path": {"type": "string", "maxLength": 512},
+    "message": {"$ref": "common.schema.json#/$defs/text"},
+    "retryable": {"const": false}
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "round_id": "00000000-0000-4000-8000-000000000001",
+  "context_id": "00000000-0000-4000-8000-000000000002",
+  "capture_session_id": "00000000-0000-4000-8000-000000000003",
+  "mode": "BASIC",
+  "provenance": "SYNTHETIC",
+  "round_number": "100",
+  "phase": "ROUND_COMPLETED",
+  "started_at": "2026-01-01T12:00:00.000Z",
+  "betting_closed_at": "2026-01-01T12:00:20.000Z",
+  "completed_at": "2026-01-01T12:00:26.000Z",
+  "outcome": {
+    "schema_version": "1.0",
+    "outcome_id": "00000000-0000-4000-8000-000000000004",
+    "round_id": "00000000-0000-4000-8000-000000000001",
+    "context_id": "00000000-0000-4000-8000-000000000002",
+    "mode": "BASIC",
+    "provenance": "SYNTHETIC",
+    "value": "SALAD",
+    "observed_at": "2026-01-01T12:00:24.000Z",
+    "confidence": 0.8,
+    "review_status": "HUMAN_CONFIRMED",
+    "confirmed_at": "2026-01-01T12:00:25.000Z",
+    "reviewer_id": "00000000-0000-4000-8000-000000000005",
+    "evidence": [{
+      "evidence_id": "00000000-0000-4000-8000-000000000006",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "captured_at": "2026-01-01T12:00:23.000Z"
+    }]
+  },
+  "missing_data": []
+}

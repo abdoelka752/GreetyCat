@@ -2,26 +2,27 @@
 
 ## Current checkpoint
 
-T001: repository audit and organization complete and verified locally. Commit/push is the final checkpoint action; verify its result in Git before claiming remote publication. No other task is complete.
+T002: shared contracts and Python reference validation complete; local checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T001 was pushed as `f570faa656ac851a7811211ec8ed5bbaa3c34a74`. No tasks after T002 are complete.
 
 ## Completed scope
 
-- Inspected initially empty workspace and remote repository; cloned the specified remote.
-- Read and preserved both supplied directives, with SHA-256 provenance.
-- Audited development tools and hardware without inspecting/control of a phone.
-- Created architecture, file-level plan, dependency-ordered tasks, game confidence ledger, unknowns and validation gates.
-- Established one-task/one-reviewed-commit/push workflow in AGENTS.md.
+- T001: empty-repository audit, preserved directives and provenance, machine audit, architecture, file plan and 21-task backlog.
+- T002: six Draft 2020-12 schemas for common fields, event, round, outcome, prediction and errors.
+- Five synthetic valid fixtures and 29 portable invalid mutation cases.
+- Offline Python structural/semantic validator, error envelope and local-file CLI.
+- Stateless guards for duplicate replay/conflict, changed prediction IDs, identity/provenance, timestamps, probability normalization and stale/wrong-round results.
+- Pinned contract dependency set in a project-local ignored virtual environment. No phone or game navigation occurred.
 
 ## Validation evidence
 
-`python tools/verify_project_docs.py`: PASS in the T001 delivery run; verifies required docs, shared task coverage, local links and directive hashes. Staged diff whitespace check is required before commit. Original directives retain their supplied bytes and are treated as binary by Git diff to preserve CRLF provenance. Neither check is an application test.
+See [T002 report](reports/T002_CONTRACTS.md) for commands, scope and limitations. Python contract suite: **PASS, 25 tests**, including the 29 shared invalid cases. Dependency consistency and documentation/provenance checks: **PASS**. Staged diff review/whitespace checks are required before commit.
 
-Android build/launch, backend execution, web execution, device capture, statistical models, end-to-end synchronization and predictive performance: **NOT TESTED / NOT IMPLEMENTED**.
+Android conformance, database-backed immutability, trusted clock mapping, backend HTTP service, dashboard, capture, real gameplay/model performance and hybrid end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**.
 
 ## Next action
 
-T002: implement versioned shared contracts and automated validation fixtures before independent Android/PC implementations can diverge. Start with event identity, outcome review status, timestamps, prediction locking, probabilities and conflict semantics. Record actual dependency/docs research when introducing validation libraries.
+T003: add the loopback-bound local FastAPI service with a health endpoint and bounded read-only ADB discovery. Show missing/unauthorized/offline/available states without inferring that a connected phone is capturing or showing Greedy Cat. Add API/diagnostic tests and execute a real local smoke test. Consult current official dependency/API documentation and reuse T002 errors/contracts where applicable.
 
 ## Outstanding evidence
 
-Original game rules/screenshots and a complete authorized round recording are needed for reliable recognition and payout validation. Core contracts, manual review, storage and baseline software can proceed without them. Do not infer availability of a phone or authorization to navigate it.
+Original game rules/screenshots and a complete authorized round recording remain necessary for reliable recognition and payout validation. Software contracts, manual review, storage and baselines can proceed without them. Device discovery does not authorize navigation or capture.

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greedycat.local/contracts/v1/round.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "round_id", "context_id", "capture_session_id", "mode", "provenance", "round_number", "phase", "started_at", "betting_closed_at", "completed_at", "outcome", "missing_data"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "round_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "context_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "capture_session_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "mode": {"$ref": "common.schema.json#/$defs/mode"},
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"},
+    "round_number": {"type": ["string", "null"], "pattern": "^[0-9]{1,32}$"},
+    "phase": {"$ref": "common.schema.json#/$defs/phase"},
+    "started_at": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/timestamp"}]},
+    "betting_closed_at": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/timestamp"}]},
+    "completed_at": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/timestamp"}]},
+    "outcome": {"oneOf": [{"type": "null"}, {"$ref": "outcome.schema.json"}]},
+    "missing_data": {"type": "array", "uniqueItems": true, "maxItems": 8, "items": {"enum": ["ROUND_NUMBER", "MODE", "START_TIME", "BETTING_CLOSE", "FRAMES", "OUTCOME"]}}
+  }
+}

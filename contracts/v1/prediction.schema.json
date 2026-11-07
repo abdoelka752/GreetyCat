@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greedycat.local/contracts/v1/prediction.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "prediction_id", "round_id", "context_id", "mode", "provenance", "source", "model_version", "dataset_id", "training_cutoff", "features_cutoff", "issued_at", "expires_at", "status", "probabilities", "abstention_reason", "data_quality", "uncertainty", "skill_status"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "prediction_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "round_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "context_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "mode": {"enum": ["BASIC", "PROFESSIONAL"]},
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"},
+    "source": {"enum": ["ANDROID", "PC"]},
+    "model_version": {"$ref": "common.schema.json#/$defs/text"},
+    "dataset_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "training_cutoff": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/timestamp"}]},
+    "features_cutoff": {"$ref": "common.schema.json#/$defs/timestamp"},
+    "issued_at": {"$ref": "common.schema.json#/$defs/timestamp"},
+    "expires_at": {"$ref": "common.schema.json#/$defs/timestamp"},
+    "status": {"enum": ["ESTIMATE", "ABSTAINED"]},
+    "probabilities": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/distribution"}]},
+    "abstention_reason": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/text"}]},
+    "data_quality": {"$ref": "common.schema.json#/$defs/quality"},
+    "uncertainty": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {"status": {"const": "NOT_ESTIMATED"}, "reason": {"$ref": "common.schema.json#/$defs/text"}}
+    },
+    "skill_status": {"const": "NO_PROVEN_EDGE"}
+  },
+  "allOf": [{
+    "if": {"properties": {"status": {"const": "ESTIMATE"}}},
+    "then": {"properties": {"probabilities": {"$ref": "common.schema.json#/$defs/distribution"}, "abstention_reason": {"type": "null"}, "data_quality": {"const": "USABLE"}}},
+    "else": {"properties": {"probabilities": {"type": "null"}, "abstention_reason": {"$ref": "common.schema.json#/$defs/text"}}}
+  }]
+}

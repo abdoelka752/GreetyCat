@@ -1,6 +1,6 @@
 # Target architecture (planned)
 
-No components in this document are implemented yet. Because the repository is empty, establish a new monorepo while preserving both directives.
+T002 implements `contracts/v1/` and the Python reference validator in `backend/greedycat/contracts.py`. Other components below remain planned. The repository started empty; both directives are preserved in this monorepo.
 
 ## Components and boundaries
 

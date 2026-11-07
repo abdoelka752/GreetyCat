@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "event_id": "00000000-0000-4000-8000-000000000009",
+  "device_id": "00000000-0000-4000-8000-000000000010",
+  "capture_session_id": "00000000-0000-4000-8000-000000000003",
+  "context_id": "00000000-0000-4000-8000-000000000002",
+  "round_id": "00000000-0000-4000-8000-000000000001",
+  "mode": "BASIC",
+  "provenance": "SYNTHETIC",
+  "sequence": 0,
+  "device_timestamp": "2026-01-01T12:00:01.000Z",
+  "phase": "BETTING_OPEN",
+  "data_quality": "USABLE",
+  "event_type": "ROUND_SNAPSHOT",
+  "payload": {
+    "schema_version": "1.0",
+    "round_id": "00000000-0000-4000-8000-000000000001",
+    "context_id": "00000000-0000-4000-8000-000000000002",
+    "capture_session_id": "00000000-0000-4000-8000-000000000003",
+    "mode": "BASIC",
+    "provenance": "SYNTHETIC",
+    "round_number": "100",
+    "phase": "BETTING_OPEN",
+    "started_at": "2026-01-01T12:00:00.000Z",
+    "betting_closed_at": null,
+    "completed_at": null,
+    "outcome": null,
+    "missing_data": ["BETTING_CLOSE", "OUTCOME"]
+  }
+}

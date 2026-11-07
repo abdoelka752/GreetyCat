@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greedycat.local/contracts/v1/event.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "event_id", "device_id", "capture_session_id", "context_id", "round_id", "mode", "provenance", "sequence", "device_timestamp", "phase", "data_quality", "event_type", "payload"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "device_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "capture_session_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "context_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "round_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "mode": {"$ref": "common.schema.json#/$defs/mode"},
+    "provenance": {"$ref": "common.schema.json#/$defs/provenance"},
+    "sequence": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "device_timestamp": {"$ref": "common.schema.json#/$defs/timestamp"},
+    "phase": {"$ref": "common.schema.json#/$defs/phase"},
+    "data_quality": {"$ref": "common.schema.json#/$defs/quality"},
+    "event_type": {"enum": ["ROUND_SNAPSHOT", "OUTCOME_REVIEW", "PREDICTION_LOCKED"]},
+    "payload": {"type": "object"}
+  },
+  "allOf": [
+    {"if": {"properties": {"event_type": {"const": "ROUND_SNAPSHOT"}}}, "then": {"properties": {"payload": {"$ref": "round.schema.json"}}}},
+    {"if": {"properties": {"event_type": {"const": "OUTCOME_REVIEW"}}}, "then": {"properties": {"payload": {"$ref": "outcome.schema.json"}}}},
+    {"if": {"properties": {"event_type": {"const": "PREDICTION_LOCKED"}}}, "then": {"properties": {"payload": {"$ref": "prediction.schema.json"}}}}
+  ]
+}

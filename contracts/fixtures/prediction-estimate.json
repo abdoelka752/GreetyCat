@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "prediction_id": "00000000-0000-4000-8000-000000000007",
+  "round_id": "00000000-0000-4000-8000-000000000001",
+  "context_id": "00000000-0000-4000-8000-000000000002",
+  "mode": "BASIC",
+  "provenance": "SYNTHETIC",
+  "source": "ANDROID",
+  "model_version": "synthetic-contract-fixture-v1",
+  "dataset_id": "00000000-0000-4000-8000-000000000008",
+  "training_cutoff": "2026-01-01T11:59:00.000Z",
+  "features_cutoff": "2026-01-01T12:00:03.000Z",
+  "issued_at": "2026-01-01T12:00:04.000Z",
+  "expires_at": "2026-01-01T12:00:20.000Z",
+  "status": "ESTIMATE",
+  "probabilities": {
+    "CORN": 0.1, "TOMATO": 0.1, "CARROT": 0.1, "PEPPER": 0.1,
+    "SHRIMP": 0.1, "COW": 0.1, "FISH": 0.1, "CHICKEN": 0.1,
+    "SALAD": 0.1, "PIZZA": 0.1
+  },
+  "abstention_reason": null,
+  "data_quality": "USABLE",
+  "uncertainty": {"status": "NOT_ESTIMATED", "reason": "Synthetic contract fixture; no model was run."},
+  "skill_status": "NO_PROVEN_EDGE"
+}

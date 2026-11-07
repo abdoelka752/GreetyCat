@@ -1,12 +1,12 @@
 # Task board
 
-Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T001 is the current documentation checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
+Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T002 is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
 
 | Task | Status | Dependencies | Deliverable and completion evidence |
 |---|---|---|---|
-| T001 | DONE — local checks PASS | none | Audit, preserved directives, confidence-classified rules, architecture, task board, validation plan; documentation verification PASS; delivery verifies commit/push |
-| T002 | TODO — next | T001 | Versioned event/outcome/prediction schemas, error contracts and shared fixtures; Python contract tests reject duplicate conflicts, bad probabilities, unknown schema and temporal leakage |
-| T003 | TODO | T002 | Local FastAPI server, health endpoint, read-only ADB device discovery with explicit unknown/unauthorized states; API tests and actual local smoke test |
+| T001 | DONE — pushed f570faa | none | Audit, directives, architecture, task board and validation plan; checks PASS; remote main matched f570faa656ac851a7811211ec8ed5bbaa3c34a74 |
+| T002 | DONE — local checks PASS | T001 | Six v1 schemas, five synthetic valid records, 29 invalid mutation fixtures, Python semantic/replay/time guards and CLI; 25 tests PASS; see reports/T002_CONTRACTS.md; delivery verifies push |
+| T003 | TODO — next | T002 | Local FastAPI server, health endpoint, read-only ADB device discovery with explicit unknown/unauthorized states; API tests and actual local smoke test |
 | T004 | TODO | T003 | React dashboard connected to health/device endpoints, real empty/error states, Windows startup commands; API integration and browser validation |
 | T005 | TODO | T002 | Kotlin/Compose app, navigation, Room entities/migrations, local repository; reproducible build, persistence tests and launch evidence |
 | T006 | TODO | T005 | Screenshot/video import, provenance hashes, manual outcome review, round validation and history; reference-to-history tests with explicit fixtures |
@@ -28,7 +28,7 @@ Each row is a reviewable task with a commit and push after passing its acceptanc
 
 ## Dependency and scope rules
 
-T002 is the next implementation task. T003 and T005 then establish the shared service and standalone Android foundation; T004 connects the web interface to actual services. T010 is the first hybrid integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
+T003 is the next implementation task. T003 and T005 establish the shared service and standalone Android foundation using T002 contracts; T004 connects the web interface to actual services. T010 is the first hybrid integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
 
 Pairing and encryption must be complete before the server is made available on the LAN. Live screen navigation/capture requires its own visible user authorization. Game evidence gaps block recognition/payout acceptance, but do not block typed contracts, manual annotation, storage or the offline pipeline. Do not mark physical-device acceptance passed using emulators or synthetic fixtures.
 

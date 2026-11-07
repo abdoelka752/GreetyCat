@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greedycat.local/contracts/v1/common.schema.json",
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "timestamp": {"type": "string", "format": "utc-millis", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "\\S"},
+    "mode": {"enum": ["BASIC", "PROFESSIONAL", "UNKNOWN"]},
+    "provenance": {"enum": ["REAL", "SYNTHETIC"]},
+    "quality": {"enum": ["UNKNOWN", "LOW", "USABLE"]},
+    "phase": {"enum": ["UNKNOWN", "BETTING_OPEN", "BETTING_CLOSED", "SPINNING", "RESULT_PENDING", "RESULT_CONFIRMED", "ROUND_COMPLETED"]},
+    "outcome": {"enum": ["CORN", "TOMATO", "CARROT", "PEPPER", "SHRIMP", "COW", "FISH", "CHICKEN", "SALAD", "PIZZA"]},
+    "probability": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "sha256", "captured_at"],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/uuid"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "captured_at": {"$ref": "#/$defs/timestamp"}
+      }
+    },
+    "distribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["CORN", "TOMATO", "CARROT", "PEPPER", "SHRIMP", "COW", "FISH", "CHICKEN", "SALAD", "PIZZA"],
+      "properties": {
+        "CORN": {"$ref": "#/$defs/probability"}, "TOMATO": {"$ref": "#/$defs/probability"},
+        "CARROT": {"$ref": "#/$defs/probability"}, "PEPPER": {"$ref": "#/$defs/probability"},
+        "SHRIMP": {"$ref": "#/$defs/probability"}, "COW": {"$ref": "#/$defs/probability"},
+        "FISH": {"$ref": "#/$defs/probability"}, "CHICKEN": {"$ref": "#/$defs/probability"},
+        "SALAD": {"$ref": "#/$defs/probability"}, "PIZZA": {"$ref": "#/$defs/probability"}
+      }
+    }
+  }
+}
