@@ -1,0 +1,3 @@
+* text=auto
+# Preserve supplied directive bytes so SHA-256 provenance survives checkout.
+docs/directives/*.md -text -diff
