@@ -1,6 +1,6 @@
 # Target architecture (planned)
 
-T002 implements `contracts/v1/` and the Python reference validator in `backend/greedycat/contracts.py`. Other components below remain planned. The repository started empty; both directives are preserved in this monorepo.
+T002 implements `contracts/v1/` and the Python reference validator in `backend/greedycat/contracts.py`. T003 adds the local FastAPI health/device service, fixed loopback launcher and typed diagnostic OpenAPI. Gameplay storage, synchronization, Android, web and intelligence components below remain planned. The repository started empty; both directives are preserved in this monorepo.
 
 ## Components and boundaries
 
@@ -33,7 +33,7 @@ Round states: UNKNOWN, BETTING_OPEN, BETTING_CLOSED, SPINNING, RESULT_PENDING, R
 
 Initial event envelope: schema_version, event_id, device_id (local pseudonym), capture_session_id, context_id, round_id, mode, sequence, device_timestamp, phase, data_quality, payload and evidence references. Prediction adds source, model_version, probabilities, dataset cutoff, issued_at, intended_round, expires_at, uncertainty, abstention reason and evidence-of-skill state.
 
-`/api/v1/health`, `/devices`, `/events`, `/rounds`, `/predictions`, `/models`, `/jobs` are proposed endpoints, not existing routes. Add only those with a working task implementation. Ingestion uses idempotency keys, transactional acknowledgments and a durable Android outbox. Same ID/different payload is a conflict. Reconnect retries are bounded and retry-safe; human corrections use revisions and explicit conflict review.
+`GET /api/v1/health`, `GET /api/v1/devices` and `GET /api/v1/openapi.json` are implemented by T003. `/events`, `/rounds`, `/predictions`, `/models` and `/jobs` under `/api/v1` remain proposed; absent routes return 404. Add only those with a working task implementation. Ingestion will use idempotency keys, transactional acknowledgments and a durable Android outbox. Same ID/different payload is a conflict. Reconnect retries must be bounded and retry-safe; human corrections will use revisions and explicit conflict review.
 
 Start desktop service bound to loopback. Add short-lived explicit pairing, revocable per-device credentials, authenticated encrypted transport and certificate trust before LAN binding. Manual address first; mDNS is an enhancement. Secrets never appear in logs or Git. ADB USB development is optional and cannot silently authorize navigation or capture. Web authentication, allowed origins and request protection must be tested before controls are exposed.
 

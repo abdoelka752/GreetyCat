@@ -1,11 +1,11 @@
 # File-level implementation plan
 
-Paths below are planned except T002, which is implemented as recorded in its row. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
+Paths below are planned except T002/T003, which are implemented as recorded in their rows. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
 
 | Task | Planned files | Primary responsibility |
 |---|---|---|
 | T002 (implemented) | `contracts/v1/` (common, event, round, outcome, prediction, errors schemas), `contracts/fixtures/`, `contracts/README.md`, `backend/greedycat/contracts.py`, `backend/requirements-contracts.txt`, `backend/tests/test_contracts.py` | Shared structural/semantic validation, replay/time guards, synthetic conformance fixtures and offline CLI |
-| T003 | `backend/pyproject.toml`, `backend/greedycat/main.py`, `api/health.py`, `devices/adb.py`, `backend/tests/test_health.py`, `test_devices.py` | Loopback-only health, bounded read-only discovery, timeout/permission/missing ADB states |
+| T003 (implemented) | `backend/requirements.txt`, `backend/greedycat/main.py`, `server.py`, `api/health.py`, `api/models.py`, `devices/adb.py`, `backend/tests/test_health.py`, `test_devices.py`, `backend/README.md`, `tools/start-server.ps1`, `tools/smoke_server.py` | Loopback-only health, typed diagnostics, bounded read-only discovery and actual HTTP/ADB verification; source-checkout launch rather than packaging |
 | T004 | `web/package.json`, `web/src/App.tsx`, `web/src/api/client.ts`, `web/src/pages/Devices.tsx`, `tools/start-dev.ps1` | Actual service integration and visible empty/error states |
 | T005 | `android/settings.gradle.kts`, `build.gradle.kts`, `gradle/libs.versions.toml`, Gradle wrapper, `app/build.gradle.kts`, `app/src/main/AndroidManifest.xml` | Reproducible pinned Android build and manifest |
 | T005 | `android/app/src/main/java/org/greedycat/intelligence/MainActivity.kt`, `ui/Navigation.kt`, `ui/Theme.kt`, `data/ResearchDatabase.kt`, `data/Entities.kt`, `data/ResearchRepository.kt` | Navigation, injection boundary, Room schema and transactions |

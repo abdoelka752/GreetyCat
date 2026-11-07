@@ -27,7 +27,7 @@ def main() -> int:
         return 1
 
     for path in ROOT.rglob("*.md"):
-        if ".git" in path.parts:
+        if any(part in {".git", ".venv", "node_modules"} for part in path.parts):
             continue
         text = path.read_text(encoding="utf-8")
         for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text):
