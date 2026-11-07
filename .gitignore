@@ -38,3 +38,6 @@ Thumbs.db
 *.apk
 *.aab
 *.hprof
+/web/test-results/
+/web/playwright-report/
+/web/.vite/

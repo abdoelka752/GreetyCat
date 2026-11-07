@@ -1,12 +1,12 @@
 # Target architecture (planned)
 
-T002 implements `contracts/v1/` and the Python reference validator in `backend/greedycat/contracts.py`. T003 adds the local FastAPI health/device service, fixed loopback launcher and typed diagnostic OpenAPI. Gameplay storage, synchronization, Android, web and intelligence components below remain planned. The repository started empty; both directives are preserved in this monorepo.
+T002 implements `contracts/v1/` and the Python reference validator. T003 adds the local FastAPI health/device service and fixed loopback launcher. T004 implements the React diagnostic dashboard, served by FastAPI from `web/dist/` on the same guarded origin, with bounded opt-in polling and runtime response checks. Gameplay storage/synchronization, Android and intelligence components remain planned. The repository started empty; both directives are preserved in this monorepo.
 
 ## Components and boundaries
 
 - `android/`: Kotlin/Compose, Room, structured coroutines. Begin with one app module and packages for domain, database, capture, vision, statistics, connectivity and features. Split Gradle modules only when useful. Essential ingestion, history and lightweight statistics work without PC access.
 - `backend/`: Python, typed FastAPI service, SQLite research copy and bounded worker queue. Separate device diagnostics, synchronization, probability estimation, evaluation, model registry and resources. FastAPI is the intended choice pending dependency compatibility checks.
-- `web/`: React/TypeScript/Vite client of the backend API. Empty states are real; no simulated telemetry disguised as live data. Every shipped control calls a working backend operation.
+- `web/`: implemented React/TypeScript/Vite client of health/device APIs, with overview/device views, selection, manual refresh and optional visible-page polling. Build/watch emits static files served by the backend; there is no second dev HTTP server. Other dashboards remain planned. Every shipped control has working behavior; no simulated telemetry appears in production.
 - `contracts/`: versioned schemas and shared valid/invalid fixtures; Android and Python validate the same invariants.
 - `tools/`: Windows setup, read-only device diagnostics, startup and verification. Raw local research data stays outside Git.
 

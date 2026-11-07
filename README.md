@@ -2,7 +2,7 @@
 
 An offline-first Android research companion with a local PC analysis server and browser dashboard. The system will collect authorized observations, estimate uncertain outcome probabilities, and evaluate predictions on later verified results. More computation does not guarantee a predictive advantage.
 
-**Current state:** shared data contracts and a working local FastAPI server with health and read-only ADB discovery. The full Python suite has 52 passing tests, and an actual loopback HTTP/ADB smoke check passed. No Android application, web dashboard, capture pipeline, or trained model exists yet. No real gameplay dataset was supplied.
+**Current state:** shared data contracts, a local FastAPI service, and a functional React dashboard for health/read-only ADB discovery. Verification: 56 Python tests, 9 client tests, 7 browser tests and the actual Windows launch/HTTP/ADB check passed. No Android application, capture pipeline or trained model exists yet. No real gameplay dataset was supplied.
 
 - [Task board and acceptance criteria](docs/TASKS.md)
 - [Current status and next task](docs/STATUS.md)
@@ -15,20 +15,25 @@ An offline-first Android research companion with a local PC analysis server and 
 - [T002 validation report](docs/reports/T002_CONTRACTS.md)
 - [Local server setup and API](backend/README.md)
 - [T003 validation report](docs/reports/T003_LOCAL_SERVER.md)
+- [Dashboard setup and commands](web/README.md)
+- [T004 validation report](docs/reports/T004_DASHBOARD.md)
 - [Original project directive](docs/directives/ANDROID_MASTER.md)
 - [Original hybrid directive](docs/directives/HYBRID_MASTER.md)
 
 The project is saved to [abdoelka752/GreetyCat](https://github.com/abdoelka752/GreetyCat). Each completed task gets a reviewed commit and push. Work still pending or blocked is tracked explicitly.
 
-To set up the server on Windows (Python 3.13), from repository root:
+To run the dashboard on Windows (Python 3.13 and Node 22.12+), from repository root:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
-.\tools\start-server.ps1
+Push-Location web
+npm.cmd ci
+Pop-Location
+.\tools\start-dev.ps1
 ```
 
-Health is available at `http://127.0.0.1:8765/api/v1/health`; stop with Ctrl+C. See the server setup link for device diagnostics, tests and limitations. To verify the documentation structure:
+Open `http://127.0.0.1:8765`; stop with Ctrl+C. The server and dashboard share one loopback origin. See the setup links for tests and limitations. To verify the documentation structure:
 
 ```powershell
 python tools/verify_project_docs.py

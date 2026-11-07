@@ -1,11 +1,13 @@
 """Local diagnostic service. Launch with `python -m greedycat.server`."""
 
 from ipaddress import ip_address
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 
 from greedycat.api.health import router
@@ -29,7 +31,7 @@ def _error(code: str, message: str, status: int) -> JSONResponse:
     return JSONResponse(error.model_dump(), status_code=status, headers={"Cache-Control": "no-store"})
 
 
-def create_app(discovery: DeviceDiscovery | None = None) -> FastAPI:
+def create_app(discovery: DeviceDiscovery | None = None, frontend_dir: Path | None = None) -> FastAPI:
     probe = discovery if discovery is not None else DeviceDiscovery()
     app = FastAPI(title="Greedy Cat Local Diagnostics", version="0.3.0",
                   openapi_url="/api/v1/openapi.json", docs_url=None, redoc_url=None,
@@ -56,6 +58,11 @@ def create_app(discovery: DeviceDiscovery | None = None) -> FastAPI:
         response = await call_next(request)
         response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; script-src 'self'; style-src 'self'; "
+            "img-src 'self' data:; connect-src 'self'; object-src 'none'; "
+            "base-uri 'none'; frame-ancestors 'none'"
+        )
         return response
 
     app.include_router(router, prefix="/api/v1")
@@ -77,6 +84,11 @@ def create_app(discovery: DeviceDiscovery | None = None) -> FastAPI:
     @app.exception_handler(Exception)
     async def internal_error(request: Request, error: Exception):
         return _error("INTERNAL_ERROR", "Local service encountered an unexpected error.", 500)
+
+    # Serve the compiled UI from the same guarded origin; no CORS/proxy needed.
+    dashboard = frontend_dir if frontend_dir is not None else Path(__file__).resolve().parents[2] / "web" / "dist"
+    if (dashboard / "index.html").is_file():
+        app.mount("/", StaticFiles(directory=dashboard, html=True), name="dashboard")
 
     return app
 

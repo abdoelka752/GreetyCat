@@ -2,6 +2,8 @@
 
 The server currently implements health and read-only ADB transport discovery. It does not capture screens, inspect applications, navigate a phone, synchronize rounds, calculate predictions, or provide pairing. These remain tracked tasks.
 
+T004 also serves the compiled React dashboard from `web/dist/` at `/`. Use the [dashboard startup instructions](../web/README.md) for the full UI. API-only operation remains supported when the dashboard is not built.
+
 ## Windows setup and run
 
 From the repository root, with Python 3.13 available:
@@ -59,7 +61,7 @@ The exact command is `adb -H 127.0.0.1 -P 5037 devices -l`, with redirected stdi
 
 The supported launcher binds IPv4 loopback only. Middleware rejects non-loopback peers and non-local Host headers, mismatched/multiple browser Origins, and cross-site fetches. Proxy headers cannot assert local identity. CORS is disabled and responses use no-store. No access log contains URLs or identifiers. This is a local diagnostics boundary, not device authentication; other local processes can call it. Do not expose it through a LAN/public reverse proxy before T008 pairing and encrypted transport exist.
 
-T004 should use a controlled same-origin frontend/backend arrangement. A Vite proxy must validate frontend requests and forward the backend Host/Origin consistently; merely changing Host while retaining a different browser Origin will be rejected. Do not solve development integration by enabling wildcard CORS.
+T004 uses same-origin static serving from this FastAPI process. No Vite HTTP proxy or CORS exception is required. Dashboard assets receive a same-origin Content Security Policy. Unknown API and static paths still return 404; there is no catch-all fake-success page. Static serving stays within the build directory.
 
 ## Verification
 

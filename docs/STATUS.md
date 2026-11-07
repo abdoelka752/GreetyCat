@@ -2,7 +2,7 @@
 
 ## Current checkpoint
 
-T003: local health service and read-only device discovery complete; local checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T002 was pushed as `01f13a59ccdf3197df03f4481fb228f0ccde2c84`; T001 as `f570faa656ac851a7811211ec8ed5bbaa3c34a74`. No tasks after T003 are complete.
+T004: functional local React diagnostic dashboard complete; local checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T003 was pushed as `e7e18abe8b9abf4b871349e2f78cbf199be6bfc0`. No tasks after T004 are complete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts; verified dry-run push succeeded after that configuration change.
 
 ## Completed scope
 
@@ -14,16 +14,19 @@ T003: local health service and read-only device discovery complete; local checks
 - T003: FastAPI health/device endpoints, typed OpenAPI diagnostics, local-only access checks, fixed loopback launcher and Windows startup script.
 - Bounded read-only ADB query, explicit diagnostic failures, per-session pseudonymous IDs and UNKNOWN capture/game capabilities.
 - Pinned service/test dependencies and actual HTTP/ADB smoke tooling. No phone or game navigation/capture occurred.
+- T004: React/TypeScript/Vite overview/device dashboard, same-origin static serving, runtime API checks, selected-device details and honest unknown/empty/error states.
+- Manual refresh and optional visible-page polling; no overlapping requests or persistent stale success after a failed refresh.
+- Windows build/start launcher, actual launcher/HTTP smoke, client tests and isolated browser QA. No hosted Site or remote dashboard was created; this is local-only software.
 
 ## Validation evidence
 
-See [T003 report](reports/T003_LOCAL_SERVER.md) and the earlier [T002 report](reports/T002_CONTRACTS.md). Full Python suite: **PASS, 52 tests** (25 contracts, 14 discovery, 13 API/launcher). Actual loopback HTTP + installed ADB smoke: **PASS**, one AVAILABLE transport. Dependency consistency, documentation/provenance and PowerShell syntax checks: **PASS**. Staged diff review/whitespace checks are required before commit.
+See [T004 report](reports/T004_DASHBOARD.md). Full Python suite: **PASS, 56 tests**; client suite: **PASS, 9 tests**; browser suite: **PASS, 7 tests**. Typecheck/build, runtime dependency audit, Python dependency consistency and actual Windows build/start + HTTP/ADB smoke: **PASS**. Latest actual device list was valid and empty. Desktop and phone viewport screenshots were inspected. Documentation/provenance and staged whitespace checks are required before commit.
 
-Android conformance, database-backed immutability, trusted clock mapping, dashboard, screen/game visibility, capture, real gameplay/model performance and hybrid end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. ADB transport discovery is not device/app/capture validation.
+Android conformance, database-backed immutability, trusted clock mapping, screen/game visibility, capture, real gameplay/model performance and hybrid gameplay end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. Browser mobile viewport validation is not Android device validation.
 
 ## Next action
 
-T004: implement the functional React/TypeScript dashboard connected to the T003 health and device APIs, real empty/error states and Windows startup commands. Keep unavailable capabilities visibly unknown. Integrate through a controlled same-origin proxy/serving arrangement compatible with T003 Host/Origin checks; test both API flow and browser behavior before marking complete.
+T005: create the Kotlin/Compose Android foundation, navigation/theme, Room schema/repository/migrations and meaningful persistence tests. Check current official Android documentation and actual SDK/Gradle/JDK compatibility before pinning versions. Build and launch on an available emulator/device with evidence; do not infer capture permission from ADB authorization or manufacture live gameplay data.
 
 ## Outstanding evidence
 

@@ -1,14 +1,14 @@
 # Task board
 
-Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T003 is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
+Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T004 is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
 
 | Task | Status | Dependencies | Deliverable and completion evidence |
 |---|---|---|---|
 | T001 | DONE — pushed f570faa | none | Audit, directives, architecture, task board and validation plan; checks PASS; remote main matched f570faa656ac851a7811211ec8ed5bbaa3c34a74 |
 | T002 | DONE — pushed 01f13a5 | T001 | Six v1 schemas, fixtures, Python integrity guards and CLI; 25 tests PASS; remote matched 01f13a59ccdf3197df03f4481fb228f0ccde2c84 |
-| T003 | DONE — local checks PASS | T002 | Local FastAPI health/device service, bounded read-only ADB, typed diagnostics and loopback guards; 52 total tests PASS; real HTTP/ADB smoke PASS, one AVAILABLE transport; see reports/T003_LOCAL_SERVER.md; delivery verifies push |
-| T004 | TODO — next | T003 | React dashboard connected to health/device endpoints, real empty/error states, Windows startup commands; API integration and browser validation |
-| T005 | TODO | T002 | Kotlin/Compose app, navigation, Room entities/migrations, local repository; reproducible build, persistence tests and launch evidence |
+| T003 | DONE — pushed e7e18ab | T002 | Local FastAPI/ADB diagnostics; 52 tests and actual HTTP/ADB smoke PASS; remote matched e7e18abe8b9abf4b871349e2f78cbf199be6bfc0 |
+| T004 | DONE — local checks PASS | T003 | React overview/device dashboard on real APIs; same-origin serving; refresh/selection/polling and honest empty/error states; 56 Python, 9 client, 7 browser tests and Windows launcher smoke PASS; reports/T004_DASHBOARD.md; delivery verifies push |
+| T005 | TODO — next | T002 | Kotlin/Compose app, navigation, Room entities/migrations, local repository; reproducible build, persistence tests and launch evidence |
 | T006 | TODO | T005 | Screenshot/video import, provenance hashes, manual outcome review, round validation and history; reference-to-history tests with explicit fixtures |
 | T007 | TODO | T006 | Empirical/Dirichlet estimates, uncertainty and immutable pre-result predictions; normalization, posterior, abstention and leakage tests |
 | T008 | TODO | T003,T005 | Explicit pairing, encrypted authenticated transport, revoke, manual address; unauthorized/expired credential and transport tests before LAN use |
@@ -28,7 +28,7 @@ Each row is a reviewable task with a commit and push after passing its acceptanc
 
 ## Dependency and scope rules
 
-T004 is the next implementation task: connect the web interface to the actual T003 health/device service. T005 then establishes the standalone Android foundation using T002 contracts. T010 is the first hybrid integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
+T005 is the next implementation task: establish the standalone Android foundation using T002 contracts. T004 now connects the diagnostic dashboard to the actual T003 service. T010 remains the first hybrid gameplay integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
 
 Pairing and encryption must be complete before the server is made available on the LAN. Live screen navigation/capture requires its own visible user authorization. Game evidence gaps block recognition/payout acceptance, but do not block typed contracts, manual annotation, storage or the offline pipeline. Do not mark physical-device acceptance passed using emulators or synthetic fixtures.
 
