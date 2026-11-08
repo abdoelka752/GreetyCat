@@ -1,6 +1,6 @@
 # File-level implementation plan
 
-Paths below are planned except T002/T003/T004, which are implemented as recorded in their rows. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
+Paths below are planned except T002/T003/T004/T005, which are implemented as recorded in their rows. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
 
 | Task | Planned files | Primary responsibility |
 |---|---|---|
@@ -26,7 +26,7 @@ Paths below are planned except T002/T003/T004, which are implemented as recorded
 | T020 | `tools/setup.ps1`, `tools/start-dev.ps1`, `docs/DEVELOPMENT.md`, `docs/DEVICE_SETUP.md`; all shipped UI routes | Documented Windows workflow and functional final screens |
 | T021 | `tests/e2e/`, `docs/reports/DEVICE_VALIDATION.md`, `docs/reports/PERFORMANCE.md`, `docs/reports/MODEL_EVALUATION.md` | Actual device/network/load/latency evidence and known limits |
 
-Android package names are proposed; settle application ID at T005. Paths sharing a cell are relative to the last explicit component base unless stated otherwise. Every code task includes meaningful unit/integration tests alongside its files.
+T005 settled application ID/package `org.greedycat.intelligence`. Its two file rows are implemented, with `ResearchApplication.kt`, `domain/ResearchModels.kt`, `domain/DemoSample.kt`, `data/ResearchDao.kt`, `ui/ResearchViewModel.kt`, generated Room schemas, JVM/instrumentation tests, Android README and isolated emulator helpers. Paths for future Android features remain proposed. Paths sharing a cell are relative to the last explicit component base unless stated otherwise. Every code task includes meaningful unit/integration tests alongside its files.
 
 ## Prioritized risks
 

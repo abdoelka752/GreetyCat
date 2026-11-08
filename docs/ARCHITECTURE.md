@@ -1,13 +1,13 @@
 # Target architecture (planned)
 
-T002 implements `contracts/v1/` and the Python reference validator. T003 adds the local FastAPI health/device service and fixed loopback launcher. T004 implements the React diagnostic dashboard, served by FastAPI from `web/dist/` on the same guarded origin, with bounded opt-in polling and runtime response checks. Gameplay storage/synchronization, Android and intelligence components remain planned. The repository started empty; both directives are preserved in this monorepo.
+T002 implements `contracts/v1/` and the Python reference validator. T003 adds the local FastAPI health/device service and fixed loopback launcher. T004 implements the React diagnostic dashboard, served by FastAPI from `web/dist/` on the same guarded origin, with bounded opt-in polling and runtime response checks. T005 adds the standalone Android foundation with transactional draft storage. Import, outcome review, synchronization and intelligence remain planned. The repository started empty; both directives are preserved in this monorepo.
 
 ## Components and boundaries
 
-- `android/`: Kotlin/Compose, Room, structured coroutines. Begin with one app module and packages for domain, database, capture, vision, statistics, connectivity and features. Split Gradle modules only when useful. Essential ingestion, history and lightweight statistics work without PC access.
+- `android/`: implemented single Kotlin/Compose app module with domain/data/ui packages, lifecycle-aware coroutines and Room. Overview/history/settings and an explicit separate demo workspace operate offline. Real history starts empty. Capture, import, statistics and connectivity are future packages; split Gradle modules only when useful.
 - `backend/`: Python, typed FastAPI service, SQLite research copy and bounded worker queue. Separate device diagnostics, synchronization, probability estimation, evaluation, model registry and resources. FastAPI is the intended choice pending dependency compatibility checks.
 - `web/`: implemented React/TypeScript/Vite client of health/device APIs, with overview/device views, selection, manual refresh and optional visible-page polling. Build/watch emits static files served by the backend; there is no second dev HTTP server. Other dashboards remain planned. Every shipped control has working behavior; no simulated telemetry appears in production.
-- `contracts/`: versioned schemas and shared valid/invalid fixtures; Android and Python validate the same invariants.
+- `contracts/`: versioned schemas and shared valid/invalid fixtures. Python implements v1 structural/semantic validation; Android T005 checks draft invariants and one shared synthetic fixture. Full Android wire-contract conformance is pending.
 - `tools/`: Windows setup, read-only device diagnostics, startup and verification. Raw local research data stays outside Git.
 
 ```mermaid
@@ -22,6 +22,8 @@ flowchart LR
 ```
 
 ## Integrity and lifecycle
+
+T005 stores sessions, draft rounds and missing-field rows in Room schema v2. Composite foreign keys bind session/context/mode/provenance, and nullable round-number uniqueness is scoped by context/mode. Inserts compare existing content and reject conflicts transactionally. Separate real/demo database files and repository provenance checks isolate synthetic samples. A tested 1->2 migration adds persistent display preferences without discarding v1 records; both schemas are tracked. There is no destructive migration fallback. Final outcomes, prediction locking, corrections and durable outbox storage are still planned.
 
 Model entities: CaptureSession, Round, RoundSnapshot, Observation, Outcome, Wager, Prediction, ModelVersion, Evaluation, Correction. Use stable UUID identifiers, UTC timestamps, source evidence hashes and explicit real/synthetic provenance. Round natural uniqueness includes game installation/context, mode and round number, with reset scope pending U06; never deduplicate across uncertain contexts silently.
 

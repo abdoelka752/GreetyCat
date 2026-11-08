@@ -1,8 +1,8 @@
-# Project status — 2026-11-07
+# Project status — 2026-11-08
 
 ## Current checkpoint
 
-T004: functional local React diagnostic dashboard complete; local checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T003 was pushed as `e7e18abe8b9abf4b871349e2f78cbf199be6bfc0`. No tasks after T004 are complete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts; verified dry-run push succeeded after that configuration change.
+T005: Android foundation complete; build, persistence/migration/UI tests and emulator launch PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T004 was pushed as `a469c5118c59affb7f37d716758294d44cc04dc5`. No tasks after T005 are complete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
 
 ## Completed scope
 
@@ -17,16 +17,20 @@ T004: functional local React diagnostic dashboard complete; local checks PASS. C
 - T004: React/TypeScript/Vite overview/device dashboard, same-origin static serving, runtime API checks, selected-device details and honest unknown/empty/error states.
 - Manual refresh and optional visible-page polling; no overlapping requests or persistent stale success after a failed refresh.
 - Windows build/start launcher, actual launcher/HTTP smoke, client tests and isolated browser QA. No hosted Site or remote dashboard was created; this is local-only software.
+- T005: Kotlin/Compose offline overview/history/settings, explicit synthetic demo route, isolated real/demo Room files, transactional draft validation/replay/conflict guards, generated schemas and explicit 1->2 migration.
+- Persisted compact-spacing setting, visible storage failure states, local icon/theme, pinned Android toolchain/wrapper and owned headless emulator test helpers. No game data is seeded in real history.
 
 ## Validation evidence
 
-See [T004 report](reports/T004_DASHBOARD.md). Full Python suite: **PASS, 56 tests**; client suite: **PASS, 9 tests**; browser suite: **PASS, 7 tests**. Typecheck/build, runtime dependency audit, Python dependency consistency and actual Windows build/start + HTTP/ADB smoke: **PASS**. Latest actual device list was valid and empty. Desktop and phone viewport screenshots were inspected. Documentation/provenance and staged whitespace checks are required before commit.
+See [T005 report](reports/T005_ANDROID_FOUNDATION.md): Android debug/test APK build **PASS**, JVM **8 tests PASS**, API 36 emulator **12 tests PASS**, lint **0 errors/13 upgrade warnings**, app cold launch **PASS**. Migration runtime mismatch was fixed and its test passes. APK declares no network/capture/shared-storage permissions. Visual screenshot review **NOT TESTED**: automatic approval review required explicit capture consent. Physical devices and other Android versions **NOT TESTED**.
 
-Android conformance, database-backed immutability, trusted clock mapping, screen/game visibility, capture, real gameplay/model performance and hybrid gameplay end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. Browser mobile viewport validation is not Android device validation.
+Prior [T004 report](reports/T004_DASHBOARD.md): **56 Python, 9 client and 7 browser tests PASS**, build/audit and actual Windows launch/HTTP/ADB smoke PASS. Those suites were not rerun for this Android-only source change. Documentation/provenance and staged whitespace checks are required before commit.
+
+Full Android wire-contract conformance, outcome/prediction lock persistence, trusted clock mapping, screen/game visibility, capture, real gameplay/model performance and hybrid gameplay end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. T005 checks draft invariants and one shared synthetic fixture; emulator results do not establish physical-device behavior.
 
 ## Next action
 
-T005: create the Kotlin/Compose Android foundation, navigation/theme, Room schema/repository/migrations and meaningful persistence tests. Check current official Android documentation and actual SDK/Gradle/JDK compatibility before pinning versions. Build and launch on an available emulator/device with evidence; do not infer capture permission from ADB authorization or manufacture live gameplay data.
+T006 after the T005 commit/push checkpoint: offline screenshot/video reference import, provenance hashes and manual outcome review. Preserve separate demo/real datasets; no automatic recognition or outcome confirmation from unverified references.
 
 ## Outstanding evidence
 

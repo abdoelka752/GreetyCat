@@ -2,7 +2,7 @@
 
 An offline-first Android research companion with a local PC analysis server and browser dashboard. The system will collect authorized observations, estimate uncertain outcome probabilities, and evaluate predictions on later verified results. More computation does not guarantee a predictive advantage.
 
-**Current state:** shared data contracts, a local FastAPI service, and a functional React dashboard for health/read-only ADB discovery. Verification: 56 Python tests, 9 client tests, 7 browser tests and the actual Windows launch/HTTP/ADB check passed. No Android application, capture pipeline or trained model exists yet. No real gameplay dataset was supplied.
+**Current state:** shared data contracts, a local FastAPI service, a React diagnostic dashboard and a Kotlin/Compose Android foundation. Android provides offline draft storage, overview/history/settings and a separate synthetic demo workspace. Reference import, capture, predictions and PC synchronization remain planned. No real gameplay dataset was supplied. See the task reports for verified checks and limits.
 
 - [Task board and acceptance criteria](docs/TASKS.md)
 - [Current status and next task](docs/STATUS.md)
@@ -17,6 +17,8 @@ An offline-first Android research companion with a local PC analysis server and 
 - [T003 validation report](docs/reports/T003_LOCAL_SERVER.md)
 - [Dashboard setup and commands](web/README.md)
 - [T004 validation report](docs/reports/T004_DASHBOARD.md)
+- [Android build, emulator and storage instructions](android/README.md)
+- [T005 validation report](docs/reports/T005_ANDROID_FOUNDATION.md)
 - [Original project directive](docs/directives/ANDROID_MASTER.md)
 - [Original hybrid directive](docs/directives/HYBRID_MASTER.md)
 
