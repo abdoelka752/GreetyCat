@@ -35,4 +35,18 @@ class ResearchMigrationTest {
             migrated.query("SELECT compactSpacing FROM workspace_preferences WHERE id=1").use { assertTrue(it.moveToFirst()); assertEquals(1, it.getInt(0)) }
         }
     }
+
+    @Test fun versionTwoPreferencesAndDraftsSurviveReviewMigration() {
+        helper.createDatabase(name, 2).apply {
+            execSQL("INSERT INTO workspace_preferences VALUES (1, 1)")
+            execSQL("INSERT INTO capture_sessions VALUES (?,?,?,?,?)", arrayOf(DemoSample.session.id, DemoSample.session.contextId, "BASIC", "SYNTHETIC", DemoSample.session.startedAt))
+            execSQL("INSERT INTO rounds VALUES (?,?,?,?,?,?,?,?,?)", arrayOf(DemoSample.round.id, DemoSample.session.id, DemoSample.session.contextId, "BASIC", "SYNTHETIC", "100", "BETTING_OPEN", DemoSample.round.startedAt, null))
+            close()
+        }
+        helper.runMigrationsAndValidate(name, 3, true, ResearchDatabase.MIGRATION_2_3).use { migrated ->
+            migrated.query("SELECT compactSpacing FROM workspace_preferences").use { assertTrue(it.moveToFirst()); assertEquals(1, it.getInt(0)) }
+            migrated.query("SELECT roundNumber FROM rounds").use { assertTrue(it.moveToFirst()); assertEquals("100", it.getString(0)) }
+            migrated.query("SELECT COUNT(*) FROM outcome_reviews").use { assertTrue(it.moveToFirst()); assertEquals(0, it.getInt(0)) }
+        }
+    }
 }

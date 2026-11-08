@@ -1,6 +1,6 @@
-# Android foundation (T005)
+# Android research companion (T005–T006)
 
-Kotlin/Compose companion application with offline Room storage, overview/history/settings navigation and an explicit demo workspace. This foundation does not import references, capture a screen, confirm outcomes, generate predictions or synchronize with the PC yet.
+Kotlin/Compose companion application with offline Room storage, overview/history/settings navigation, reference import, manual result review and an explicit demo workspace. It does not capture a screen, recognize results automatically, generate predictions or synchronize with the PC yet.
 
 ## Toolchain
 
@@ -73,14 +73,36 @@ To install on a physical phone later, explicitly choose and authorize that devic
 
 The application container owns two distinct Room files: `greedycat-research.db` for REAL records and `greedycat-demo.db` for SYNTHETIC records. Real history is empty on first launch. Settings -> Open demo workspace -> Add sample draft stores one fixed, explicitly synthetic, unconfirmed draft corresponding to the shared round-open fixture; repeated inserts are idempotent. Demo entry is explicit, does not become the default workspace and does not appear in real history.
 
-Room stores capture-session identity, draft rounds and per-field missing-data flags in separate relational tables. Composite foreign keys enforce session/context/mode/provenance agreement; a unique context/mode/round-number index prevents duplicate numbered rounds while nullable unknown numbers remain unknown. Repository validation rejects invalid UUIDs/timestamps, inconsistent identities, mixed provenance and confirmed/completed states without an outcome implementation. Inserts compare existing content within a transaction, never replace it. Conflicts roll back the entire operation.
+Room stores session identity, draft rounds and per-field missing-data flags in separate relational tables. Composite foreign keys enforce session/context/mode/provenance agreement; a unique context/mode/round-number index prevents duplicate numbered rounds while nullable unknown numbers remain unknown. Draft validation rejects invalid UUIDs/timestamps, inconsistent identities, mixed provenance and attempts to promote a draft directly to a confirmed/completed phase. Inserts compare existing content within a transaction, never replace it. Conflicts roll back the entire operation. T006 confirmation uses a separate append-only review chain.
 
-Queries return at most 100 recent drafts per workspace. These are drafts, not training outcomes. Final Outcome, Prediction, Correction, Wager and synchronization entities are deferred to their respective tasks. T005 is not full Android conformance with all v1 wire contracts: one shared draft fixture is checked, while complete contract ingestion/transport remains later work.
+History and reference lists return at most 100 recent records per workspace. A pending draft is not a training outcome; confirmed history derives its latest value from human reviews. Prediction, Wager, wire export and synchronization entities remain future work. Complete Android contract ingestion/transport remains later work.
 
-Room schema v1 was generated during this task before adding the persisted compact-spacing preference. Schema v2 adds `workspace_preferences`; the explicit 1->2 migration preserves prior draft records and missing-field rows. Both generated schemas are tracked under `app/schemas/`. V1 is a development schema, not a previously released app. There is no destructive-migration fallback. Compact spacing is persisted through Room in the real workspace, and settings/database failures have visible messages.
+Room schema v1 was generated during T005 before adding the persisted compact-spacing preference. Schema v2 adds `workspace_preferences`; the explicit 1->2 migration preserves prior draft records and missing-field rows. T006 schema v3 adds references, local identity/context and review revisions through a 2->3 migration. All three generated schemas are tracked under `app/schemas/`. V1 is a development schema, not a previously released app. There is no destructive-migration fallback. Compact spacing is persisted through Room in the real workspace, and settings/database failures have visible messages.
 
 The app explicitly pins serialization JSON/core to 1.8.1, matching Room's migration schema reader. Navigation otherwise resolves 1.7.3 in the app while the test APK resolves 1.8.1, causing an instrumentation classloader ABI error. Keep both runtimes aligned when upgrading.
 
 Automatic cloud/device-transfer backup is excluded; deliberate backup/export belongs to T019. No user captures, databases, keys, SDK paths, emulator state or test artifacts enter Git.
 
-See the [task board](../docs/TASKS.md) and [architecture](../docs/ARCHITECTURE.md). T006 adds reference import/manual review; this foundation exposes no pretend import/capture buttons.
+## Import and review (T006)
+
+Open History -> Import image or video. Select only a file you are authorized to use. Android's document picker grants access to that file; no gallery enumeration or shared-storage permission is requested. Supported media: PNG, JPEG, WebP, MP4 and WebM, at most 128 MiB, images up to 40 megapixels and videos up to two hours. The original bytes are copied privately, validated and SHA-256 hashed. Source names/paths/URIs are not persisted. Reimporting identical bytes reuses the reference.
+
+Choose Review reference. Inspect the image or use the video's playback controls and pause-position button. Enter the observed game mode, canonical round number, outcome, UTC observation timestamp (`YYYY-MM-DDTHH:MM:SS.sssZ`) and evidence description. Video results also require a position within the recording. Import time is not observation time. Check the attestation before confirming. Human confirmation is not automated recognition or proof of predictive skill.
+
+Confirmed history shows the latest human review. Review or correct opens its audit trail. Corrections preserve prior values and require a reason; a stale predecessor cannot overwrite a newer review. Mode, round number and context cannot change as part of a correction. Each workspace retains a context for round uniqueness; use Start a new context only for a distinct/reset history. The reviewer is a local pseudonym, not authenticated identity. Clock trust is not established.
+
+For sample references, use Settings -> Open demo workspace -> Review demo references. Those files and reviews stay SYNTHETIC and separate from real history. Clear demo records removes demo rounds/reviews; reference originals remain retained. Retention/deletion/export controls belong to T019.
+
+## Authorized physical-phone check
+
+With exactly one authorized physical phone connected, and only after its owner approves app installation/testing:
+
+```powershell
+.\tools\test-android-phone.ps1 -RunInstrumentation
+# For the explicit non-UI storage/media/migration subset:
+.\tools\test-android-phone.ps1 -RunInstrumentation -NonUiOnly
+```
+
+The helper installs this app and its tests, keeps real data, uses temporary synthetic fixtures/databases for new review tests, and opens only MainActivity. Existing navigation tests clear demo sample rounds and reset compact spacing. No screen capture, gallery browsing, game control or device-wide settings changes occur. Results stay in ignored `artifacts/android/t006-phone-instrumentation.txt` or `t006-phone-storage.txt`; identifiers are not logged. Runs are bounded to five minutes (two for the non-UI subset), and only this project's runner/app is stopped on timeout. A successful subset is not a full UI pass. T006 verified 18 non-UI checks on the API 34 phone and all 21 checks on the API 36 emulator; the full phone UI run stalled and remains unverified.
+
+See the [T006 report](../docs/reports/T006_REFERENCE_REVIEW.md), [task board](../docs/TASKS.md) and [architecture](../docs/ARCHITECTURE.md).

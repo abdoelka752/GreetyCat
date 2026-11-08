@@ -31,7 +31,8 @@ class ResearchNavigationTest {
         compose.onNodeWithText("Sample draft already exists. No duplicate was added.").assertExists()
         compose.onNodeWithText("Back to real workspace").performScrollTo().performClick()
         compose.onNodeWithText("History", useUnmergedTree = true).performClick()
-        compose.onNodeWithText("No real rounds yet").assertIsDisplayed()
+        compose.waitUntil(10_000) { compose.onAllNodesWithText("No real rounds yet").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("No real rounds yet").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Settings").performClick()
         compose.onNodeWithText("Open demo workspace").performScrollTo().performClick()
         compose.onNodeWithTag("demoRow").assertExists()

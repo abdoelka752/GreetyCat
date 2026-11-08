@@ -36,6 +36,7 @@ fun ResearchNavigation(container: ResearchApplication) {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route ?: "overview"
+    val demoRoute = route.startsWith("demo")
     val compact by model.compactSpacing.collectAsStateWithLifecycle()
     val inset = if (compact) 14.dp else 20.dp
 
@@ -44,14 +45,14 @@ fun ResearchNavigation(container: ResearchApplication) {
         topBar = {
             TopAppBar(title = {
                 Column {
-                    Text(if (route == "demo") "Demo workspace" else "Greedy Cat", fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
-                    Text(if (route == "demo") "DEMO · SYNTHETIC" else "INTELLIGENCE / LOCAL WORKSPACE", fontSize = 9.sp,
+                    Text(if (demoRoute) "Demo workspace" else "Greedy Cat", fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+                    Text(if (demoRoute) "DEMO · SYNTHETIC" else "INTELLIGENCE / LOCAL WORKSPACE", fontSize = 9.sp,
                         color = WorkspaceAmber, letterSpacing = 1.3.sp)
                 }
             }, colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background))
         },
         bottomBar = {
-            if (route != "demo") NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
+            if (!demoRoute) NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 listOf("overview" to "Overview", "history" to "History", "settings" to "Settings").forEach { (destination, label) ->
                     NavigationBarItem(selected = route == destination,
                         onClick = { nav.navigate(destination) { popUpTo("overview") { saveState = true }; launchSingleTop = true; restoreState = true } },
@@ -70,8 +71,8 @@ fun ResearchNavigation(container: ResearchApplication) {
                     Text("An offline home for careful game research.", color = WorkspaceMuted)
                     ResearchCard {
                         Text("REAL WORKSPACE", color = WorkspaceAmber, fontSize = 10.sp, letterSpacing = 1.sp)
-                        Text("No verified observations", style = MaterialTheme.typography.titleLarge)
-                        Text("Draft records are not confirmed results. Capture and outcome review will be added in a later step.", color = WorkspaceMuted)
+                        Text("Your evidence, on this device", style = MaterialTheme.typography.titleLarge)
+                        Text("Import a reference and review its result. Drafts and human-confirmed results are kept separately.", color = WorkspaceMuted)
                         FilledTonalButton(onClick = { nav.navigate("history") }) { Text("View history") }
                     }
                     ResearchCard {
@@ -88,13 +89,23 @@ fun ResearchNavigation(container: ResearchApplication) {
                 }
             }
             composable("history") {
-                val rounds by model.realRounds.collectAsStateWithLifecycle()
-                ScreenColumn(inset) {
-                    Eyebrow("REAL RECORDS ONLY")
-                    Text("Round history", style = MaterialTheme.typography.headlineMedium)
-                    Text("Up to 100 recent drafts. Drafts are not verified results.", color = WorkspaceMuted)
-                    RoundRows(rounds, demo = false)
+                val library = referenceModel(container.realReviews, "realReferences")
+                ReferenceLibrary(library) { evidence, round -> nav.navigate("review/$evidence/$round") }
+            }
+            composable("review/{evidenceId}/{roundId}") { backStack ->
+                ManualReviewScreen(container.realReviews, requireNotNull(backStack.arguments?.getString("evidenceId")),
+                    requireNotNull(backStack.arguments?.getString("roundId"))) { nav.popBackStack() }
+            }
+            composable("demoReferences") {
+                Column {
+                    TextButton(onClick = { nav.popBackStack() }) { Text("Back to demo workspace") }
+                    val library = referenceModel(container.demoReviews, "demoReferences")
+                    ReferenceLibrary(library) { evidence, round -> nav.navigate("demoReview/$evidence/$round") }
                 }
+            }
+            composable("demoReview/{evidenceId}/{roundId}") { backStack ->
+                ManualReviewScreen(container.demoReviews, requireNotNull(backStack.arguments?.getString("evidenceId")),
+                    requireNotNull(backStack.arguments?.getString("roundId"))) { nav.popBackStack() }
             }
             composable("settings") {
                 val preferenceError by model.preferenceError.collectAsStateWithLifecycle()
@@ -138,12 +149,20 @@ fun ResearchNavigation(container: ResearchApplication) {
                         OutlinedButton(onClick = model::clearSamples, enabled = !busy && (rounds as? RoundLoad.Ready)?.rows?.isNotEmpty() == true) { Text("Clear demo records") }
                         notice?.let { Text(it, fontSize = 12.sp, color = WorkspaceAmber) }
                     }
+                    OutlinedButton(onClick = { nav.navigate("demoReferences") }) { Text("Review demo references") }
                     RoundRows(rounds, demo = true)
                 }
             }
         }
     }
 }
+
+@Composable
+private fun referenceModel(repository: org.greedycat.intelligence.data.ReviewRepository, key: String): ReferenceViewModel =
+    viewModel(key = key, factory = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = ReferenceViewModel(repository) as T
+    })
 
 @Composable
 private fun ScreenColumn(spacing: androidx.compose.ui.unit.Dp, content: @Composable ColumnScope.() -> Unit) {

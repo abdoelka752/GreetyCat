@@ -1,6 +1,6 @@
 # Task board
 
-Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T005 is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
+Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T006 is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
 
 | Task | Status | Dependencies | Deliverable and completion evidence |
 |---|---|---|---|
@@ -8,8 +8,8 @@ Each row is a reviewable task with a commit and push after passing its acceptanc
 | T002 | DONE — pushed 01f13a5 | T001 | Six v1 schemas, fixtures, Python integrity guards and CLI; 25 tests PASS; remote matched 01f13a59ccdf3197df03f4481fb228f0ccde2c84 |
 | T003 | DONE — pushed e7e18ab | T002 | Local FastAPI/ADB diagnostics; 52 tests and actual HTTP/ADB smoke PASS; remote matched e7e18abe8b9abf4b871349e2f78cbf199be6bfc0 |
 | T004 | DONE - pushed a469c51 | T003 | React overview/device dashboard on real APIs; same-origin serving; refresh/selection/polling and honest empty/error states; 56 Python, 9 client, 7 browser tests and Windows launcher smoke PASS; reports/T004_DASHBOARD.md; remote main matched a469c5118c59affb7f37d716758294d44cc04dc5 |
-| T005 | DONE - local checks PASS | T002 | Kotlin/Compose offline foundation, isolated real/demo Room repositories, schema migration and navigation; build, 8 JVM and 12 emulator tests PASS; lint 0 errors/13 warnings; reports/T005_ANDROID_FOUNDATION.md; delivery verifies push |
-| T006 | TODO | T005 | Screenshot/video import, provenance hashes, manual outcome review, round validation and history; reference-to-history tests with explicit fixtures |
+| T005 | DONE - pushed 409963f | T002 | Kotlin/Compose offline foundation, isolated real/demo Room repositories, schema migration and navigation; build, 8 JVM and 12 emulator tests PASS; lint 0 errors/13 warnings; reports/T005_ANDROID_FOUNDATION.md; remote main matched 409963f4d71e84a69469433fd4454d5842df979c |
+| T006 | DONE - local checks PASS | T005 | Bounded private image/video import, SHA-256 provenance, attested outcome review, append-only corrections and context/history; 11 JVM and 21 emulator tests PASS, 18 non-UI phone tests PASS and app launch PASS; phone UI automation incomplete; reports/T006_REFERENCE_REVIEW.md; delivery verifies push |
 | T007 | TODO | T006 | Empirical/Dirichlet estimates, uncertainty and immutable pre-result predictions; normalization, posterior, abstention and leakage tests |
 | T008 | TODO | T003,T005 | Explicit pairing, encrypted authenticated transport, revoke, manual address; unauthorized/expired credential and transport tests before LAN use |
 | T009 | TODO | T006,T008 | Durable outbox, PC SQLite ingestion, acknowledgments, corrections/conflicts, retry/reconnect; interruption and duplicate delivery tests |
@@ -28,7 +28,7 @@ Each row is a reviewable task with a commit and push after passing its acceptanc
 
 ## Dependency and scope rules
 
-T005 establishes the standalone Android foundation using a subset of T002 draft invariants. T006 is the next implementation task after the T005 commit/push checkpoint. T004 now connects the diagnostic dashboard to the actual T003 service. T010 remains the first hybrid gameplay integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
+T005 establishes the standalone Android foundation using a subset of T002 draft invariants. T006 adds offline reference review; T007 is next after its commit/push checkpoint. T004 now connects the diagnostic dashboard to the actual T003 service. T010 remains the first hybrid gameplay integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
 
 Pairing and encryption must be complete before the server is made available on the LAN. Live screen navigation/capture requires its own visible user authorization. Game evidence gaps block recognition/payout acceptance, but do not block typed contracts, manual annotation, storage or the offline pipeline. Do not mark physical-device acceptance passed using emulators or synthetic fixtures.
 
