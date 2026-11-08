@@ -1,6 +1,6 @@
-# Android research companion (T005–T007)
+# Android research companion (T005–T008)
 
-Kotlin/Compose companion application with offline Room storage, overview/history/settings navigation, reference import, audited manual review, statistical research summaries and an explicit demo workspace. Prospective manual checkpoints are immutable abstentions. Verified live probability forecasts, screen capture, automatic recognition and PC synchronization are not available yet.
+Kotlin/Compose companion application with offline Room storage, overview/history/settings navigation, reference import, audited manual review, statistical research summaries and an explicit demo workspace. T008b adds Settings -> Connect your PC with operator-confirmed TLS trust and encrypted local credentials; see [pairing operation and evidence](../docs/reports/T008B_ANDROID_PAIRING.md). Prospective manual checkpoints are immutable abstentions. Verified live probability forecasts, screen capture, automatic recognition and PC gameplay synchronization are not available yet.
 
 ## Toolchain
 
@@ -67,7 +67,7 @@ Stop the owned emulator after verification:
 adb -s emulator-5556 emu kill
 ```
 
-To install on a physical phone later, explicitly choose and authorize that device before installing. ADB availability does not grant screen capture or navigation permission. This app declares no network, capture, shared-storage or background-service permissions.
+Physical-phone installation/testing requires the owner's authorization; ADB availability does not grant screen capture or navigation permission. T008b adds INTERNET for explicit PC connection actions and disables cleartext. No capture, overlay, shared-storage or background-service permissions are declared.
 
 ## Data boundaries
 

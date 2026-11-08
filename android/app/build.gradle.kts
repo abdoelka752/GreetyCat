@@ -13,8 +13,8 @@ android {
         applicationId = "org.greedycat.intelligence"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "0.7.0"
+        versionCode = 4
+        versionName = "0.8.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true }

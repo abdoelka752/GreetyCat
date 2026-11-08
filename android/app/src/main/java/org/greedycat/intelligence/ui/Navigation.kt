@@ -28,6 +28,10 @@ import org.greedycat.intelligence.data.StoredRound
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResearchNavigation(container: ResearchApplication) {
+    val pairingModel: PairingViewModel = viewModel(key = "pc-pairing", factory = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = PairingViewModel(container.pairingVault) as T
+    })
     val model: ResearchViewModel = viewModel(factory = object : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
@@ -137,11 +141,14 @@ fun ResearchNavigation(container: ResearchApplication) {
                     }
                     ResearchCard {
                         Text("Your controls", style = MaterialTheme.typography.titleMedium)
-                        Text("This foundation requests no network, screen capture or storage-sharing permissions. It does not navigate another app or place wagers.", color = WorkspaceMuted)
+                        Text("Network access is used only when you explicitly connect to your PC. Screen capture and storage sharing have separate controls. This app does not navigate the game or place wagers.", color = WorkspaceMuted)
                         StatusLine("Screen capture", "Not available yet")
-                        StatusLine("Phone pairing", "Not available yet")
+                        OutlinedButton(onClick = { nav.navigate("pairing") }) { Text("Connect your PC") }
                     }
                 }
+            }
+            composable("pairing") {
+                PairingScreen(pairingModel) { nav.popBackStack() }
             }
             composable("demo") {
                 val rounds by model.demoRounds.collectAsStateWithLifecycle()

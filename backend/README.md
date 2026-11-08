@@ -1,6 +1,6 @@
 # Local diagnostic server (T003)
 
-The diagnostic server implements health and read-only ADB transport discovery. It does not capture screens, inspect applications, navigate a phone, synchronize rounds or calculate predictions. T008a adds a **separate loopback HTTPS pairing service**; Android connection UI/trust and LAN operation remain pending T008b. See [pairing commands, security boundary and evidence](../docs/reports/T008A_PC_PAIRING.md). The diagnostic health field `pairing: NOT_IMPLEMENTED` still describes this HTTP service, which deliberately cannot exchange credentials.
+The diagnostic server implements health and read-only ADB transport discovery. It does not capture screens, inspect applications, navigate a phone, synchronize rounds or calculate predictions. T008 adds a **separate HTTPS pairing service**, loopback by default, with Android operator-confirmed certificate trust, encrypted credential storage and explicit revocation. See [PC pairing foundation](../docs/reports/T008A_PC_PAIRING.md) and [Android pairing, opt-in private-IP operation and current evidence](../docs/reports/T008B_ANDROID_PAIRING.md). The diagnostic health field `pairing: NOT_IMPLEMENTED` still describes this HTTP service, which deliberately cannot exchange credentials.
 
 T004 also serves the compiled React dashboard from `web/dist/` at `/`. Use the [dashboard startup instructions](../web/README.md) for the full UI. API-only operation remains supported when the dashboard is not built.
 
@@ -59,7 +59,7 @@ The exact command is `adb -H 127.0.0.1 -P 5037 devices -l`, with redirected stdi
 
 ## Local access boundary
 
-The supported launcher binds IPv4 loopback only. Middleware rejects non-loopback peers and non-local Host headers, mismatched/multiple browser Origins, and cross-site fetches. Proxy headers cannot assert local identity. CORS is disabled and responses use no-store. No access log contains URLs or identifiers. This is a local diagnostics boundary, not device authentication; other local processes can call it. Do not expose it through a LAN/public reverse proxy before T008 pairing and encrypted transport exist.
+The diagnostic launcher binds IPv4 loopback only. Middleware rejects non-loopback peers and non-local Host headers, mismatched/multiple browser Origins, and cross-site fetches. Proxy headers cannot assert local identity. CORS is disabled and responses use no-store. No access log contains URLs or identifiers. This is a local diagnostics boundary, not device authentication; other local processes can call it. Never expose this diagnostic HTTP service through a LAN/public reverse proxy. T008 uses a separate native HTTPS listener with explicit authentication; it does not expose the dashboard or ADB diagnostics.
 
 T004 uses same-origin static serving from this FastAPI process. No Vite HTTP proxy or CORS exception is required. Dashboard assets receive a same-origin Content Security Policy. Unknown API and static paths still return 404; there is no catch-all fake-success page. Static serving stays within the build directory.
 

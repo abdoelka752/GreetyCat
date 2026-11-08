@@ -2,7 +2,7 @@
 
 ## Current checkpoint
 
-T008a: PC pairing/TLS checkpoint complete; 74 backend checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T007 was pushed as `11cfbd05e494b6012eee1a0ad9ca0abcaafd9019`. T008 is split into independently reviewable PC (T008a) and Android/cross-device (T008b) checkpoints; the parent remains incomplete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
+T008b and parent T008 pairing acceptance complete: operator-confirmed Android TLS pairing, encrypted credentials, manual check/revoke and actual phone USB/Wi-Fi trust/expiry checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T008a was pushed as `c2f707d527e8c8df2b48ff836ce420fb70f3d0d6`. Default services remain loopback; private-IP pairing requires explicit opt-in and a matching certificate. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
 
 ## Completed scope
 
@@ -24,11 +24,14 @@ T008a: PC pairing/TLS checkpoint complete; 74 backend checks PASS. Commit/push i
 - T007: empirical frequencies, symmetric Dirichlet posterior means/parameter SD, normalized predictive entropy and explicit conditional-model assumptions; empty history shows no probability table.
 - Bounded evidence-verified snapshots use review revisions known before a cutoff, isolate mode/context/provenance and preserve lineage. Room v4 and SQL triggers protect immutable ANDROID abstention records across corrections, restarts and demo draft clearing. Natural archive identities cannot be reused within a context.
 - Manual targets retain unknown game phase/start time and an explicit unverified-acquisition label/attestation. They always ABSTAIN; no live probability forecast is issued. Local deadline and clock-consistency checks are not trusted acquisition or authenticated time.
-- T008a: separate loopback HTTPS pairing service with an explicit private identity, expiring one-use invitations, hashed persistent sessions, operator/self revocation and a backward-clock guard. T008b must supply Android trust/storage/UI and cross-device acceptance before LAN operation.
+- T008a: separate loopback HTTPS pairing service with an explicit private identity, expiring one-use invitations, hashed persistent sessions, operator/self revocation and a backward-clock guard.
+- T008b: Settings -> Connect your PC, explicit certificate SHA-256 confirmation, manual private IPv4 HTTPS address, pinned TLS 1.2/1.3 client, Keystore AES-GCM atomic credentials, probe/revoke and warned offline local forgetting. The pairing API alone supports explicit certificate-matched private-IP operation; diagnostic HTTP/dashboard stays loopback-only. No lasting user pairing is created by synthetic acceptance tests.
 
 ## Validation evidence
 
-Current [T008a report](reports/T008A_PC_PAIRING.md): **74 backend tests PASS**, including 18 pairing tests and an actual temporary HTTPS listener. One-use/expiring invitations, hashed persistent sessions, revocation, concurrency, clock-rollback guard, request boundaries, certificate trust/substitution/hostname rejection and regression checks passed. `pip check` PASS. Both services remain loopback-only; no Android source, APK or phone interaction changed in this checkpoint. Android certificate trust/secure storage/UI, cross-device connectivity and LAN acceptance remain **NOT IMPLEMENTED / NOT TESTED** in T008b. PC-only pairing does not complete T008.
+Current [T008b report](reports/T008B_ANDROID_PAIRING.md): **24 JVM and 78 backend tests PASS**, build/test APKs PASS; lint **0 errors/14 warnings** (13 upgrade advisories plus retained custom trust-manager review advisory). Physical API 34 phone: **31 non-UI tests PASS**, app update/cold launch PASS; separate actual USB and direct Wi-Fi TLS integration runs **PASS** for pin/hostname rejection, exchange, encrypted reopen, expiry, replay and revocation. API 36 emulator: **36 PASS/1 explicit fixture-dependent integration skip**; the skipped test passed on the physical phone in both transports. New consent/reset UI test passes on emulator. No capture/screenshots, game navigation, firewall changes or research-data clearing. Test identities/fixtures/mappings/listeners were removed; the owned emulator was stopped.
+
+Prior [T008a report](reports/T008A_PC_PAIRING.md): 74 backend tests PASS for the PC-only loopback foundation. T008b extends it with verified native Android trust/storage and opt-in private-IP transport. Pairing supplies no gameplay synchronization or live prediction claims.
 
 See [T007 report](reports/T007_STATISTICS_PREDICTIONS.md): debug/test APK build **PASS**, JVM **20 tests PASS**, API 36 emulator **33 tests PASS**, API 34 physical phone **29 non-UI tests PASS**, app update/cold launch **PASS**. Lint **0 errors/13 upgrade advisories**. Tests cover posterior/normalization, abstention, immutable SQL/persistence, cutoff/correction/target leakage, limits and migration with prior review rows. The updated app is open on the phone under the owner's existing app-testing authorization; no gallery browsing or screen capture occurred.
 
@@ -36,15 +39,15 @@ Prior [T006 report](reports/T006_REFERENCE_REVIEW.md): 11 JVM, 21 emulator and 1
 
 Full phone UI automation remains **BLOCKED / NOT PASSED** after the T006 five-minute timeout. Emulator UI checks pass. System picker/provider interaction, video playback controls, actual game references, visual screenshots, other devices and Android versions remain **NOT TESTED**. Do not equate emulator or phone-storage coverage with complete physical-device acceptance.
 
-Prior [T005 report](reports/T005_ANDROID_FOUNDATION.md): foundation build, 8 JVM and 12 emulator tests PASS. Its capture-consent rejection applies to the screenshot attempt recorded there; no new screen capture was attempted in T006. APK permissions remain limited to the app-scoped signature receiver permission.
+Prior [T005 report](reports/T005_ANDROID_FOUNDATION.md): foundation build, 8 JVM and 12 emulator tests PASS. Its capture-consent rejection applies to the screenshot attempt recorded there; no new capture was attempted here. T008b adds INTERNET for explicit PC pairing; no capture, overlay, shared-storage or background-service permissions are declared.
 
-Prior [T004 report](reports/T004_DASHBOARD.md): **56 Python, 9 client and 7 browser tests PASS**, build/audit and actual Windows launch/HTTP/ADB smoke PASS. Those suites were not rerun for this Android-only source change. Documentation/provenance and staged whitespace checks are required before commit.
+Prior [T004 report](reports/T004_DASHBOARD.md): 56 Python, 9 client and 7 browser tests PASS, build/audit and actual Windows launch/HTTP/ADB smoke PASS. Current backend regressions pass as part of the 78-test suite; unchanged web client/browser suites were not rerun for T008b. Documentation/provenance and staged whitespace checks pass before commit.
 
 Full Android wire-contract conformance, verified live forecasts, trusted clock mapping, screen/game visibility, capture, real gameplay/model performance and hybrid gameplay end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. Human outcome review and immutable local abstentions do not establish automatic recognition, authenticated evidence interpretation or demonstrated predictive skill.
 
 ## Next action
 
-T008b after the T008a commit/push checkpoint: Android manual-address pairing screen, operator-confirmed certificate trust before credential transmission, secure token storage, probe/revoke/reconnect and actual cross-device tests. The services stay loopback-only until secure pairing/transport acceptance passes. No demonstrated predictive edge or verified payout matrix exists.
+T009 after the T008b commit/push checkpoint: durable Android outbox, authenticated PC SQLite ingestion, idempotent acknowledgments, auditable correction/conflict handling and retry/reconnect interruption tests. T008 pairing does not transfer research records yet. Full phone UI automation, manual identity/clock recovery, certificate rotation, API 26/other devices and long-term networking remain unverified. No demonstrated predictive edge or verified payout matrix exists.
 
 ## Outstanding evidence
 

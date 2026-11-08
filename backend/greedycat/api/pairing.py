@@ -4,6 +4,7 @@ from ipaddress import ip_address
 import re
 from typing import Literal
 from uuid import UUID
+from urllib.parse import urlsplit
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -13,6 +14,7 @@ from starlette.exceptions import HTTPException
 
 from greedycat.main import _local_authority
 from greedycat.security.pairing import PairingDenied, PairingStore
+from greedycat.security.addresses import private_address
 
 SECRET = re.compile(r"[A-Za-z0-9_-]{43}\Z")
 
@@ -38,7 +40,9 @@ class Credential(BaseModel):
     token: str
 
 
-def create_pairing_app(store: PairingStore) -> FastAPI:
+def create_pairing_app(store: PairingStore, bind: str = "127.0.0.1") -> FastAPI:
+    private_address(bind)
+    lan = not ip_address(bind).is_loopback
     app = FastAPI(title="Greedy Cat pairing", version="pairing-1", docs_url=None, redoc_url=None,
                   openapi_url=None)
 
@@ -49,13 +53,23 @@ def create_pairing_app(store: PairingStore) -> FastAPI:
     @app.middleware("http")
     async def boundary(request: Request, call_next):
         try:
-            local = request.client is not None and ip_address(request.client.host).is_loopback
+            local = request.client is not None and (ip_address(request.client.host).is_loopback or
+                lan and bool(private_address(request.client.host)))
         except ValueError:
             local = False
         if not local:
             return error(403, "LOCAL_ONLY")
         hosts = request.headers.getlist("host")
-        if len(hosts) != 1 or not _local_authority(hosts[0]):
+        def authority(value):
+            if not lan and bind == "127.0.0.1":
+                return _local_authority(value)
+            try:
+                url = urlsplit("https://" + value)
+                return (url.hostname == bind and url.username is None and url.password is None and
+                        not url.path and not url.query and not url.fragment and (url.port is None or 1 <= url.port <= 65535))
+            except ValueError:
+                return False
+        if len(hosts) != 1 or not authority(hosts[0]):
             return error(403, "HOST_DENIED")
         if request.url.scheme != "https":
             return error(403, "TLS_REQUIRED")
