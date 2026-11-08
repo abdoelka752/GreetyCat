@@ -1,6 +1,6 @@
 # Task board
 
-Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T007 is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
+Each row is a reviewable task with a commit and push after passing its acceptance checks. TODO is not implementation. T008a is the current checkpoint; publication evidence is recorded in the delivery message and subsequent status checkpoint.
 
 | Task | Status | Dependencies | Deliverable and completion evidence |
 |---|---|---|---|
@@ -10,8 +10,10 @@ Each row is a reviewable task with a commit and push after passing its acceptanc
 | T004 | DONE - pushed a469c51 | T003 | React overview/device dashboard on real APIs; same-origin serving; refresh/selection/polling and honest empty/error states; 56 Python, 9 client, 7 browser tests and Windows launcher smoke PASS; reports/T004_DASHBOARD.md; remote main matched a469c5118c59affb7f37d716758294d44cc04dc5 |
 | T005 | DONE - pushed 409963f | T002 | Kotlin/Compose offline foundation, isolated real/demo Room repositories, schema migration and navigation; build, 8 JVM and 12 emulator tests PASS; lint 0 errors/13 warnings; reports/T005_ANDROID_FOUNDATION.md; remote main matched 409963f4d71e84a69469433fd4454d5842df979c |
 | T006 | DONE - pushed 4d925c4 | T005 | Bounded private image/video import, SHA-256 provenance, attested outcome review, append-only corrections and context/history; 11 JVM and 21 emulator tests PASS, 18 non-UI phone tests PASS and app launch PASS; phone UI automation incomplete; reports/T006_REFERENCE_REVIEW.md; remote main matched 4d925c43e58dbec1464c70346061829f81fdf250 |
-| T007 | DONE - local checks PASS | T006 | Empirical/Dirichlet research means, SD/entropy, bounded as-of evidence snapshots and immutable prospective manual abstentions; 20 JVM, 33 emulator and 29 non-UI phone tests PASS; migration/SQL protection/replay/leakage checks PASS; verified live forecasts remain gated; reports/T007_STATISTICS_PREDICTIONS.md; delivery verifies push |
-| T008 | TODO | T003,T005 | Explicit pairing, encrypted authenticated transport, revoke, manual address; unauthorized/expired credential and transport tests before LAN use |
+| T007 | DONE - pushed 11cfbd0 | T006 | Empirical/Dirichlet research means, SD/entropy, bounded as-of evidence snapshots and immutable prospective manual abstentions; 20 JVM, 33 emulator and 29 non-UI phone tests PASS; reports/T007_STATISTICS_PREDICTIONS.md; remote main matched 11cfbd05e494b6012eee1a0ad9ca0abcaafd9019 |
+| T008 | IN PROGRESS - split into T008a/T008b | T003,T005 | Explicit pairing, encrypted authenticated transport, revoke, manual address; unauthorized/expired credential and transport tests before LAN use; parent remains incomplete until both checkpoints pass |
+| T008a | DONE - local checks PASS | T003 | Isolated loopback HTTPS pairing service, explicit expiring one-use invitations, bounded persistent hashed sessions and revocation; 74 backend tests PASS including 18 new pairing/real-TLS tests; reports/T008A_PC_PAIRING.md; delivery verifies push |
+| T008b | TODO - next | T005,T008a | Android manual-address pairing UI, certificate trust/pinning before credentials, secure credential storage, probe/revoke/reconnect; actual cross-device trust/expiry tests; LAN remains disabled until acceptance passes |
 | T009 | TODO | T006,T008 | Durable outbox, PC SQLite ingestion, acknowledgments, corrections/conflicts, retry/reconnect; interruption and duplicate delivery tests |
 | T010 | TODO | T004,T007,T009 | Integrated slice: imported/manual Android observation -> Room -> PC sync -> PC estimate -> web history -> versioned Android result; actual cross-component tests, stale-result rejection and separate prediction records |
 | T011 | TODO | T006 | Calibration, detection interfaces, evidence review queue and finite-state machine; annotated references, noisy/missing frame tests; no unsupported automatic recognition claim |
@@ -28,7 +30,7 @@ Each row is a reviewable task with a commit and push after passing its acceptanc
 
 ## Dependency and scope rules
 
-T005 establishes the standalone Android foundation using a subset of T002 draft invariants. T006 adds offline reference review; T008 is next after the T007 commit/push checkpoint. T004 now connects the diagnostic dashboard to the actual T003 service. T010 remains the first hybrid gameplay integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
+T005 establishes the standalone Android foundation using a subset of T002 draft invariants. T006 adds offline reference review. T008 was split into a PC security checkpoint (T008a) and Android connection/cross-device trust acceptance (T008b) to keep changes independently reviewable. T008b is next; the parent T008 remains incomplete. T004 now connects the diagnostic dashboard to the actual T003 service. T010 remains the first hybrid gameplay integration gate. T006 supplies an offline reference-to-history slice before automatic recognition. These tasks reconcile both directives without pretending that OCR is possible without references.
 
 Pairing and encryption must be complete before the server is made available on the LAN. Live screen navigation/capture requires its own visible user authorization. Game evidence gaps block recognition/payout acceptance, but do not block typed contracts, manual annotation, storage or the offline pipeline. Do not mark physical-device acceptance passed using emulators or synthetic fixtures.
 

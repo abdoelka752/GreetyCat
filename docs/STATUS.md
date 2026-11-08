@@ -2,7 +2,7 @@
 
 ## Current checkpoint
 
-T007: local statistical research summaries and immutable prospective abstention checkpoints complete; software checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T006 was pushed as `4d925c43e58dbec1464c70346061829f81fdf250`. No tasks after T007 are complete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
+T008a: PC pairing/TLS checkpoint complete; 74 backend checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T007 was pushed as `11cfbd05e494b6012eee1a0ad9ca0abcaafd9019`. T008 is split into independently reviewable PC (T008a) and Android/cross-device (T008b) checkpoints; the parent remains incomplete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
 
 ## Completed scope
 
@@ -24,8 +24,11 @@ T007: local statistical research summaries and immutable prospective abstention 
 - T007: empirical frequencies, symmetric Dirichlet posterior means/parameter SD, normalized predictive entropy and explicit conditional-model assumptions; empty history shows no probability table.
 - Bounded evidence-verified snapshots use review revisions known before a cutoff, isolate mode/context/provenance and preserve lineage. Room v4 and SQL triggers protect immutable ANDROID abstention records across corrections, restarts and demo draft clearing. Natural archive identities cannot be reused within a context.
 - Manual targets retain unknown game phase/start time and an explicit unverified-acquisition label/attestation. They always ABSTAIN; no live probability forecast is issued. Local deadline and clock-consistency checks are not trusted acquisition or authenticated time.
+- T008a: separate loopback HTTPS pairing service with an explicit private identity, expiring one-use invitations, hashed persistent sessions, operator/self revocation and a backward-clock guard. T008b must supply Android trust/storage/UI and cross-device acceptance before LAN operation.
 
 ## Validation evidence
+
+Current [T008a report](reports/T008A_PC_PAIRING.md): **74 backend tests PASS**, including 18 pairing tests and an actual temporary HTTPS listener. One-use/expiring invitations, hashed persistent sessions, revocation, concurrency, clock-rollback guard, request boundaries, certificate trust/substitution/hostname rejection and regression checks passed. `pip check` PASS. Both services remain loopback-only; no Android source, APK or phone interaction changed in this checkpoint. Android certificate trust/secure storage/UI, cross-device connectivity and LAN acceptance remain **NOT IMPLEMENTED / NOT TESTED** in T008b. PC-only pairing does not complete T008.
 
 See [T007 report](reports/T007_STATISTICS_PREDICTIONS.md): debug/test APK build **PASS**, JVM **20 tests PASS**, API 36 emulator **33 tests PASS**, API 34 physical phone **29 non-UI tests PASS**, app update/cold launch **PASS**. Lint **0 errors/13 upgrade advisories**. Tests cover posterior/normalization, abstention, immutable SQL/persistence, cutoff/correction/target leakage, limits and migration with prior review rows. The updated app is open on the phone under the owner's existing app-testing authorization; no gallery browsing or screen capture occurred.
 
@@ -41,7 +44,7 @@ Full Android wire-contract conformance, verified live forecasts, trusted clock m
 
 ## Next action
 
-T008 after the T007 commit/push checkpoint: explicit pairing/revocation and encrypted authenticated Android-PC transport, including unauthorized/expired-credential and certificate-trust tests. The server stays loopback-only until secure pairing/transport acceptance passes. No demonstrated predictive edge or verified payout matrix exists.
+T008b after the T008a commit/push checkpoint: Android manual-address pairing screen, operator-confirmed certificate trust before credential transmission, secure token storage, probe/revoke/reconnect and actual cross-device tests. The services stay loopback-only until secure pairing/transport acceptance passes. No demonstrated predictive edge or verified payout matrix exists.
 
 ## Outstanding evidence
 

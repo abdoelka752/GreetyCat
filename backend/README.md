@@ -1,6 +1,6 @@
 # Local diagnostic server (T003)
 
-The server currently implements health and read-only ADB transport discovery. It does not capture screens, inspect applications, navigate a phone, synchronize rounds, calculate predictions, or provide pairing. These remain tracked tasks.
+The diagnostic server implements health and read-only ADB transport discovery. It does not capture screens, inspect applications, navigate a phone, synchronize rounds or calculate predictions. T008a adds a **separate loopback HTTPS pairing service**; Android connection UI/trust and LAN operation remain pending T008b. See [pairing commands, security boundary and evidence](../docs/reports/T008A_PC_PAIRING.md). The diagnostic health field `pairing: NOT_IMPLEMENTED` still describes this HTTP service, which deliberately cannot exchange credentials.
 
 T004 also serves the compiled React dashboard from `web/dist/` at `/`. Use the [dashboard startup instructions](../web/README.md) for the full UI. API-only operation remains supported when the dashboard is not built.
 
