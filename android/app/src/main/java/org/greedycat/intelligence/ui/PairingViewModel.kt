@@ -10,9 +10,10 @@ import java.time.Instant
 data class PairingState(val loading: Boolean = true, val busy: Boolean = false, val saved: Boolean = false,
     val storageBlocked: Boolean = false,
     val address: String = "", val fingerprint: String = "", val expires: String = "",
-    val status: String = "No PC paired.", val error: String? = null)
+    val status: String = "No PC paired.", val error: String? = null, val synchronization: SyncSummary? = null)
 
-class PairingViewModel(private val vault: PairingVault, private val client: PairingClient = PairingClient()) : ViewModel() {
+class PairingViewModel(private val vault: PairingVault, private val client: PairingClient = PairingClient(), private val sync: ReviewSync? = null) : ViewModel() {
+    val syncAvailable get() = sync != null
     private val mutable = MutableStateFlow(PairingState())
     val state = mutable.asStateFlow()
     private var credential: PairingCredential? = null
@@ -21,11 +22,12 @@ class PairingViewModel(private val vault: PairingVault, private val client: Pair
         catch (error: Exception) { mutable.update { it.copy(storageBlocked = true) }; throw error }
         publish("Saved pairing loaded; connection has not been checked.")
     } }
-    private fun publish(status: String) {
+    private suspend fun publish(status: String) {
         val record = credential
+        val progress = record?.let { sync?.summary(it) }
         mutable.update { it.copy(saved = record != null, address = record?.address ?: "",
             fingerprint = record?.fingerprint ?: "", expires = record?.let { Instant.ofEpochSecond(it.expiresAt.toLong()).toString() } ?: "",
-            status = if (record == null) "No PC paired." else status) }
+            status = if (record == null) "No PC paired." else status, synchronization = progress) }
     }
     fun pair(address: String, fingerprint: String, invitation: String, confirmed: Boolean, finished: () -> Unit) = operation {
         try {
@@ -43,6 +45,18 @@ class PairingViewModel(private val vault: PairingVault, private val client: Pair
     fun probe() = operation {
         client.probe(requireNotNull(credential))
         publish("PC accepted this credential at ${Instant.now()}. This is a one-time check.")
+    }
+    fun synchronize() = operation {
+        val service = requireNotNull(sync)
+        val destination = requireNotNull(credential)
+        val progress = try { service.drain(destination) }
+        finally { val counters = service.summary(destination); mutable.update { it.copy(synchronization = counters) } }
+        mutable.update { it.copy(synchronization = progress, status = when {
+            progress.conflicts > 0 -> "Some reviews conflict with the PC copy. Neither copy was replaced."
+            progress.missing > 0 -> "Some local reviews still need queuing. Sync again; a full archive needs future retention controls."
+            progress.pending > 0 -> "Reviews remain pending. Sync again after the retry delay; check the PC connection if needed."
+            else -> "All queued real reviews are acknowledged by this PC pairing."
+        }) }
     }
     fun revoke() = operation {
         val record = requireNotNull(credential)

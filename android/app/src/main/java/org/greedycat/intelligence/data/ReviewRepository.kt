@@ -76,6 +76,7 @@ class ReviewRepository(
                 (previous?.revision ?: 0) + 1, previous?.id, input.outcome.name, input.observedAt,
                 confirmedAt, identity.reviewerId, input.videoOffsetMs, input.reason.trim())
             dao.insertReview(result)
+            SyncOutbox.enqueue(database, result)
             result
         }
     }

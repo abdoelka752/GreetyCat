@@ -1,6 +1,6 @@
 # File-level implementation plan
 
-Paths below are planned except T002/T003/T004/T005/T006/T007/T008, which are implemented as recorded in their rows/reports. T008a/T008b form the complete pairing checkpoint; T009 synchronization is next. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
+Paths below are planned except T002/T003/T004/T005/T006/T007/T008/T009, which are implemented as recorded in their rows/reports. T009 covers explicit human-review metadata delivery; T010 calculation/web/returned-result integration is next. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
 
 | Task | Planned files | Primary responsibility |
 |---|---|---|
@@ -14,7 +14,7 @@ Paths below are planned except T002/T003/T004/T005/T006/T007/T008, which are imp
 | T008 | Implemented through T008a/T008b below; no separate sessions module was needed | Explicit pair/revoke, secure token storage, encrypted transport and certificate trust |
 | T008a (implemented) | Backend `security/pairing.py`, `security/identity.py`, `api/pairing.py`, `pairing_server.py`, `tests/test_pairing.py` | Loopback-only HTTPS, explicit invitation/hashed session ledger and revocation; real TLS acceptance; no Android or LAN claim |
 | T008b (implemented) | Android `connectivity/PairingProtocol.kt`, `PairingClient.kt`, `PairingTls.kt`, `PairingVault.kt`, `ui/PairingViewModel.kt`, `PairingScreen.kt`; backend `security/addresses.py` and address/certificate guards; `tools/test_pairing_phone.py` | Operator-confirmed certificate trust before credentials, manual HTTPS address, encrypted storage, probe/revoke; real USB/Wi-Fi phone checks plus bounded native transport and explicit private-IP opt-in |
-| T009 | Android `data/Outbox.kt`, `connectivity/SyncWorker.kt`; backend `storage/schema.sql`, `storage/migrations/`, `sync/ingest.py`, `sync/conflicts.py`, `api/events.py` | Durable retry-safe delivery, transactions, corrections and audit |
+| T009 (implemented) | Android `data/SyncOutbox.kt`, `connectivity/ReviewSync.kt`, Room schema v5, existing pairing client/screen; backend `sync/ingest.py`, native API; `contracts/sync-v1/` and fault/device/UI tests | Durable transactional human-review outbox, bounded foreground retries, exact-byte committed acknowledgments, append-only PC schema v1 and correction/conflict audit; source remains consolidated rather than adding unused worker/storage modules |
 | T010 | Backend `statistics/baseline.py`, `api/rounds.py`, `api/predictions.py`; web `pages/Live.tsx`, `pages/History.tsx`; Android `connectivity/ResultGate.kt`; `tests/integration/` | Roundtrip integration, independent PC estimate and late/wrong-round result handling |
 | T011 | Android `vision/Detector.kt`, `vision/Calibration.kt`, `gamestate/RoundStateMachine.kt`; backend `vision/reprocess.py`; `tests/fixtures/manifest.json` | Confidence/evidence contracts, anchors, temporal validation and review |
 | T012 | Android `capture/CaptureService.kt`, `capture/ProjectionController.kt`, `capture/FrameQueue.kt`, `feature/observer/ObserverScreen.kt` | Consented capture lifecycle, bounded frames, visible stop and diagnostics |

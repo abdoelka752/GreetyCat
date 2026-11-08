@@ -19,6 +19,19 @@ class ResearchMigrationTest {
 
     @After fun deleteTestDatabase() { InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(name) }
 
+    @Test fun versionFourMigratesWithoutDeletingPriorRecordsOrLedgerGuards() {
+        helper.createDatabase(name, 4).apply {
+            execSQL("INSERT INTO workspace_preferences VALUES (1,1)")
+            PredictionSchema.protect(this)
+            close()
+        }
+        helper.runMigrationsAndValidate(name, 5, true, SyncOutbox.migration).use { migrated ->
+            migrated.query("SELECT compactSpacing FROM workspace_preferences").use { assertTrue(it.moveToFirst()); assertEquals(1, it.getInt(0)) }
+            migrated.query("SELECT count(*) FROM sync_outbox").use { assertTrue(it.moveToFirst()); assertEquals(0, it.getInt(0)) }
+            migrated.query("SELECT count(*) FROM sqlite_master WHERE type='trigger'").use { assertTrue(it.moveToFirst()); assertEquals(6, it.getInt(0)) }
+        }
+    }
+
     @Test fun versionOneRecordsAndMissingFlagsSurvivePreferenceMigration() {
         helper.createDatabase(name, 1).apply {
             execSQL("INSERT INTO capture_sessions VALUES (?,?,?,?,?)", arrayOf(DemoSample.session.id, DemoSample.session.contextId, "BASIC", "SYNTHETIC", DemoSample.session.startedAt))

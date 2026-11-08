@@ -11,6 +11,7 @@ import org.greedycat.intelligence.ingestion.ReferenceImporter
 /** Small constructor-injected container; separate files for real and demo data. */
 class ResearchApplication : Application() {
     val pairingVault by lazy { org.greedycat.intelligence.connectivity.PairingVault(this) }
+    val realSync by lazy { org.greedycat.intelligence.connectivity.ReviewSync(realDatabase) }
     val realDatabase by lazy { ResearchDatabase.open(this, "greedycat-research.db") }
     val demoDatabase by lazy { ResearchDatabase.open(this, "greedycat-demo.db") }
     val realRepository by lazy { ResearchRepository(realDatabase, Provenance.REAL) }

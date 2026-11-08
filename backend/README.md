@@ -2,6 +2,8 @@
 
 The diagnostic server implements health and read-only ADB transport discovery. It does not capture screens, inspect applications, navigate a phone, synchronize rounds or calculate predictions. T008 adds a **separate HTTPS pairing service**, loopback by default, with Android operator-confirmed certificate trust, encrypted credential storage and explicit revocation. See [PC pairing foundation](../docs/reports/T008A_PC_PAIRING.md) and [Android pairing, opt-in private-IP operation and current evidence](../docs/reports/T008B_ANDROID_PAIRING.md). The diagnostic health field `pairing: NOT_IMPLEMENTED` still describes this HTTP service, which deliberately cannot exchange credentials.
 
+T009 extends only the native HTTPS listener with authenticated `POST /api/sync/v1/reviews`, a private `research.sqlite3` beside its pairing ledger, append-only human-review corrections and retry-safe committed acknowledgments. The original diagnostic HTTP service is unchanged. See [the sync-1 contract](../contracts/sync-v1/README.md) and [operation/acceptance report](../docs/reports/T009_REVIEW_SYNC.md). The PC receives reviewed metadata/notes/hashes only; no media files, automatic observations or predictions are imported. The native service still starts with `greedycat.pairing_server`; there is no unauthenticated ingestion listener.
+
 T004 also serves the compiled React dashboard from `web/dist/` at `/`. Use the [dashboard startup instructions](../web/README.md) for the full UI. API-only operation remains supported when the dashboard is not built.
 
 ## Windows setup and run

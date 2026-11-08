@@ -21,6 +21,7 @@ fun PairingScreen(model: PairingViewModel, back: () -> Unit) {
     var invitation by remember { mutableStateOf("") }
     var confirmed by remember { mutableStateOf(false) }
     var forgetDialog by remember { mutableStateOf(false) }
+    var syncDialog by remember { mutableStateOf(false) }
     val activity = LocalActivity.current
     DisposableEffect(activity) {
         val alreadySecure = activity?.window?.attributes?.flags?.and(WindowManager.LayoutParams.FLAG_SECURE) != 0
@@ -32,7 +33,7 @@ fun PairingScreen(model: PairingViewModel, back: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(14.dp)) {
         TextButton(onClick = back) { Text("Back to settings") }
         Text("Connect your PC", style = MaterialTheme.typography.headlineMedium)
-        Text("Pairing only connects this app. Capture and game observation have separate controls.", color = WorkspaceMuted)
+        Text("Connect this app and explicitly sync reviewed results. Game capture and observation are not available yet.", color = WorkspaceMuted)
         Text(state.status, modifier = Modifier.testTag("pairingStatus"))
         if (state.busy) CircularProgressIndicator(Modifier.size(24.dp))
         state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -41,6 +42,10 @@ fun PairingScreen(model: PairingViewModel, back: () -> Unit) {
             Text("Trusted SHA-256: ${state.fingerprint}")
             Text("Credential expiry (PC time): ${state.expires}", color = WorkspaceMuted)
             Button(onClick = model::probe, enabled = enabled) { Text("Check connection") }
+            if (model.syncAvailable) {
+                state.synchronization?.let { Text("Acknowledged: ${it.acknowledged} / ${it.archived} · Pending: ${it.pending} · Conflicts: ${it.conflicts} · Not queued: ${it.missing}") }
+                OutlinedButton(onClick = { syncDialog = true }, enabled = enabled) { Text("Sync reviewed history") }
+            }
             OutlinedButton(onClick = model::revoke, enabled = enabled) { Text("Revoke on PC and forget") }
         } else if (state.storageBlocked) {
             Text("Saved pairing could not be opened safely. Use Forget local pairing before trying again, and revoke the old pairing on the PC.", color = MaterialTheme.colorScheme.error)
@@ -63,8 +68,12 @@ fun PairingScreen(model: PairingViewModel, back: () -> Unit) {
         }
         OutlinedButton(onClick = { forgetDialog = true }, enabled = enabled) { Text("Forget local pairing") }
         Text("If the PC is offline, forgetting only removes this device's stored token. Revoke the old pairing on the PC before creating another invitation.", color = WorkspaceMuted)
-        Text("Research history remains available offline. Pairing does not synchronize game records yet.", color = WorkspaceMuted)
+        Text("Research history remains available offline. Sync sends only reviewed results, corrections, notes and evidence hashes. Original media stays on your phone.", color = WorkspaceMuted)
     }
+    if (syncDialog) AlertDialog(onDismissRequest = { syncDialog = false }, title = { Text("Send reviewed history to this PC?") },
+        text = { Text("Send up to 25 real reviewed results or corrections, including review notes and evidence hashes, to the saved PC. No images or videos are sent. Re-pairing starts a separate PC copy; it does not merge prior pairings.") },
+        confirmButton = { TextButton(onClick = { syncDialog = false; model.synchronize() }) { Text("Sync reviews") } },
+        dismissButton = { TextButton(onClick = { syncDialog = false }) { Text("Cancel") } })
     if (forgetDialog) AlertDialog(onDismissRequest = { forgetDialog = false }, title = { Text("Forget this PC locally?") },
         text = { Text("The PC credential remains valid until revoked or expired. Your research history is kept.") },
         confirmButton = { TextButton(onClick = { forgetDialog = false; model.forget() }) { Text("Forget locally") } },

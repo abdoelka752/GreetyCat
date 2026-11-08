@@ -9,12 +9,14 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [SessionEntity::class, RoundEntity::class, MissingFieldEntity::class, WorkspacePreferences::class,
-    ReferenceFile::class, OutcomeReview::class, ReviewIdentity::class, LockedPrediction::class], version = 4, exportSchema = true)
+    ReferenceFile::class, OutcomeReview::class, ReviewIdentity::class, LockedPrediction::class,
+    SyncIdentity::class, SyncEvent::class, SyncReceipt::class], version = 5, exportSchema = true)
 @TypeConverters(ResearchConverters::class)
 abstract class ResearchDatabase : RoomDatabase() {
     abstract fun researchDao(): ResearchDao
     abstract fun reviewDao(): ReviewDao
     abstract fun predictionDao(): PredictionDao
+    abstract fun syncDao(): SyncDao
 
     companion object {
         val MIGRATION_2_3 = object : Migration(2, 3) {
@@ -37,7 +39,7 @@ abstract class ResearchDatabase : RoomDatabase() {
 
         fun open(context: Context, name: String): ResearchDatabase =
             Room.databaseBuilder(context.applicationContext, ResearchDatabase::class.java, name)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, PredictionSchema.migration)
-                .addCallback(PredictionSchema.callback).build()
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, PredictionSchema.migration, SyncOutbox.migration)
+                .addCallback(PredictionSchema.callback).addCallback(SyncOutbox.callback).build()
     }
 }

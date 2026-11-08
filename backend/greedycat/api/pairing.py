@@ -1,4 +1,4 @@
-"""Isolated HTTPS pairing API. No diagnostic, capture or gameplay endpoints."""
+"""Authenticated native HTTPS pairing and human-review sync; no device control."""
 
 from ipaddress import ip_address
 import re
@@ -15,6 +15,7 @@ from starlette.exceptions import HTTPException
 from greedycat.main import _local_authority
 from greedycat.security.pairing import PairingDenied, PairingStore
 from greedycat.security.addresses import private_address
+from greedycat.sync.ingest import SyncStore, SyncConflict
 
 SECRET = re.compile(r"[A-Za-z0-9_-]{43}\Z")
 
@@ -40,9 +41,19 @@ class Credential(BaseModel):
     token: str
 
 
+class ReviewEnvelope(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    schema_version: Literal["sync-1"]
+    source_id: str = Field(pattern=r"^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$")
+    event_id: str = Field(pattern=r"^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$")
+    payload_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    payload_json: str = Field(max_length=8192)
+
+
 def create_pairing_app(store: PairingStore, bind: str = "127.0.0.1") -> FastAPI:
     private_address(bind)
     lan = not ip_address(bind).is_loopback
+    research = SyncStore(store.path.parent / "research.sqlite3")
     app = FastAPI(title="Greedy Cat pairing", version="pairing-1", docs_url=None, redoc_url=None,
                   openapi_url=None)
 
@@ -80,7 +91,7 @@ def create_pairing_app(store: PairingStore, bind: str = "127.0.0.1") -> FastAPI:
         chunks = []
         async for chunk in request.stream():
             size += len(chunk)
-            if size > 4096:
+            if size > (16384 if request.url.path == "/api/sync/v1/reviews" else 4096):
                 return error(413, "BODY_LIMIT")
             chunks.append(chunk)
         # Cache only the bounded body for the downstream JSON parser.
@@ -107,6 +118,19 @@ def create_pairing_app(store: PairingStore, bind: str = "127.0.0.1") -> FastAPI:
     @app.delete("/api/pairing/v1/session", response_model=Session)
     def revoke(request: Request):
         return store.authenticate(token(request), revoke=True)
+
+    @app.post("/api/sync/v1/reviews")
+    def ingest(request: Request, body: ReviewEnvelope):
+        owner = store.authenticate(token(request))["pairing_id"]
+        try:
+            return research.ingest(owner, body.source_id, body.event_id, body.payload_sha256, body.payload_json)
+        except SyncConflict as denied:
+            return JSONResponse(dict(schema_version="sync-1", event_id=body.event_id,
+                payload_sha256=body.payload_sha256, status="CONFLICT", code=denied.code,
+                retryable=denied.retryable), status_code=409)
+        except ValueError:
+            return JSONResponse(dict(schema_version="sync-1", event_id=body.event_id,
+                payload_sha256=body.payload_sha256, status="CONFLICT", code="INVALID_REVIEW", retryable=False), status_code=422)
 
     @app.exception_handler(PairingDenied)
     async def denied(request, exception):

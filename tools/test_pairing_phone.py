@@ -16,6 +16,7 @@ import sys
 from tempfile import TemporaryDirectory
 from threading import Thread
 import time
+from contextlib import closing
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
@@ -51,7 +52,8 @@ def listener(directory, bind="127.0.0.1", certificate_address=None):
         port = sock.getsockname()[1]
         config = uvicorn.Config(create_pairing_app(store, bind), log_level="critical", access_log=False,
                                 proxy_headers=False, ws="none", ssl_certfile=str(directory / "server.pem"),
-                                ssl_keyfile=str(directory / "server.key"), limit_concurrency=16)
+                                ssl_keyfile=str(directory / "server.key"), limit_concurrency=16,
+                                timeout_keep_alive=1, timeout_graceful_shutdown=5)
         config.load()
         config.ssl = server_context(directory)
         server = uvicorn.Server(config)
@@ -68,12 +70,16 @@ def listener(directory, bind="127.0.0.1", certificate_address=None):
             server.should_exit = True
             thread.join(timeout=10)
             if thread.is_alive():
+                server.force_exit = True
+                thread.join(timeout=10)
+            if thread.is_alive():
                 raise RuntimeError("Temporary listener failed to stop.")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--lan-address", help="Explicit PC RFC1918 IP, otherwise use owned USB reverse mappings.")
+    parser.add_argument("--sync", action="store_true", help="Run the isolated T009 review-sync integration instead of pairing-only acceptance.")
     args = parser.parse_args()
     bind = private_address(args.lan_address) if args.lan_address else "127.0.0.1"
     sdk = Path(os.environ.get("ANDROID_HOME") or os.environ.get("ANDROID_SDK_ROOT") or
@@ -127,16 +133,23 @@ def main():
                 adb_run("-s", serial, "shell", "run-as", "org.greedycat.intelligence", "sh", "-c",
                         f"'cat > {fixture_path}'", input=json.dumps(fixture).encode())
                 output = adb_run("-s", serial, "shell", "am", "instrument", "-w", "-r", "-e", "class",
-                                 "org.greedycat.intelligence.connectivity.PairingIntegrationTest",
+                                 "org.greedycat.intelligence.connectivity." + ("SyncIntegrationTest" if args.sync else "PairingIntegrationTest"),
                                  "org.greedycat.intelligence.test/androidx.test.runner.AndroidJUnitRunner", timeout=90)
                 # Only redacted JUnit status is emitted. Raw output stays ignored locally.
                 label = "lan" if args.lan_address else "usb"
-                (private_root / f"t008-phone-{label}.txt").write_text(output, encoding="utf-8")
+                (private_root / f"{'t009' if args.sync else 't008'}-phone-{label}.txt").write_text(output, encoding="utf-8")
                 if re.search(r"INSTRUMENTATION_STATUS_CODE: -[34]", output) or not re.search(r"^OK \(1 test\)\s*$", output, re.MULTILINE):
                     raise RuntimeError("Cross-device pairing test did not report PASS; inspect ignored local JUnit log.")
                 if store.list_sessions():
                     raise RuntimeError("Test credential remained active after self-revocation.")
-                print(f"PASS: physical-phone {label.upper()} TLS pin/hostname rejection, exchange, encrypted reopen, expired credential, replay and revocation.")
+                if args.sync:
+                    from greedycat.sync.ingest import SyncStore
+                    with closing(SyncStore(good / "research.sqlite3").connect()) as research:
+                        if research.execute("SELECT count(*) FROM sync_events").fetchone()[0] != 2 or research.execute("SELECT value FROM sync_reviews ORDER BY revision").fetchall() != [("CORN",), ("TOMATO",)]:
+                            raise RuntimeError("PC did not preserve exactly two synthetic review revisions.")
+                    print(f"PASS: physical-phone {label.upper()} authenticated sync, actual PC commit/lost ACK/replay, local reopen, preserved correction and revocation; exactly two synthetic PC rows.")
+                else:
+                    print(f"PASS: physical-phone {label.upper()} TLS pin/hostname rejection, exchange, encrypted reopen, expired credential, replay and revocation.")
     finally:
         operations = [("shell", "run-as", "org.greedycat.intelligence", "rm", "-f", fixture_path)]
         operations += [("reverse", "--remove", mapping) for mapping in mappings]

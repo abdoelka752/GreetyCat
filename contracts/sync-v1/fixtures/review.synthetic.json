@@ -1,0 +1,16 @@
+{
+  "review_id": "d289087c-4197-444c-b15e-e79079386891",
+  "round_id": "19a882d3-5fa0-4965-b4a9-01cafbf31831",
+  "context_id": "3142e2e8-f472-4adb-980a-7f89ab5c57c9",
+  "mode": "BASIC", "provenance": "SYNTHETIC", "round_number": "100",
+  "revision": 1, "previous_id": null, "value": "CORN",
+  "observed_at": "2026-01-01T12:00:00.000Z", "confirmed_at": "2026-01-01T12:01:00.000Z",
+  "reviewer_id": "8d7895cd-46e2-40af-b9f0-de5ef73063b9",
+  "reason": "Explicit synthetic sync fixture; not observed gameplay.",
+  "evidence": {
+    "id": "fb9bac63-190e-4730-aebc-8b2f4d204cd1",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "mime": "image/png", "bytes": 12, "imported_at": "2026-01-01T12:00:30.000Z",
+    "duration_ms": null, "video_offset_ms": null
+  }
+}

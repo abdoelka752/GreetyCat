@@ -30,7 +30,7 @@ import org.greedycat.intelligence.data.StoredRound
 fun ResearchNavigation(container: ResearchApplication) {
     val pairingModel: PairingViewModel = viewModel(key = "pc-pairing", factory = object : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = PairingViewModel(container.pairingVault) as T
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = PairingViewModel(container.pairingVault, sync = container.realSync) as T
     })
     val model: ResearchViewModel = viewModel(factory = object : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -165,7 +165,7 @@ fun ResearchNavigation(container: ResearchApplication) {
                     }
                     OutlinedButton(onClick = { nav.navigate("demoReferences") }) { Text("Review demo references") }
                     OutlinedButton(onClick = { nav.navigate("demoResearch") }) { Text("Open demo research") }
-                    Text("Clearing demo rounds retains immutable checkpoint snapshots.", color = WorkspaceMuted)
+                    Text("Clearing demo rounds retains checkpoint snapshots and queued review archives.", color = WorkspaceMuted)
                     RoundRows(rounds, demo = true)
                 }
             }
