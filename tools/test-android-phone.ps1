@@ -25,14 +25,14 @@ if ($RunInstrumentation) {
     if ($LASTEXITCODE -ne 0) { throw 'Test APK installation failed.' }
     $artifactRoot = Join-Path $projectRoot 'artifacts\android'
     New-Item -ItemType Directory -Path $artifactRoot -Force | Out-Null
-    $logBase = if ($NonUiOnly) { 't006-phone-storage' } else { 't006-phone-instrumentation' }
+    $logBase = if ($NonUiOnly) { 't007-phone-storage' } else { 't007-phone-instrumentation' }
     $testLog = Join-Path $artifactRoot "$logBase.txt"
     $errorLog = Join-Path $artifactRoot "$logBase.stderr.txt"
     $runnerArguments = @('-s', $serial, 'shell', 'am', 'instrument', '-w', '-r')
     if ($NonUiOnly) {
-        $testClasses = @('data.ReferenceReviewTest', 'data.ResearchMigrationTest', 'data.ResearchRepositoryTest', 'domain.SharedDraftFixtureTest') | ForEach-Object { "org.greedycat.intelligence.$_" }
+        $testClasses = @('data.PredictionRepositoryTest', 'data.ReferenceReviewTest', 'data.ResearchMigrationTest', 'data.ResearchRepositoryTest', 'domain.SharedDraftFixtureTest') | ForEach-Object { "org.greedycat.intelligence.$_" }
         $runnerArguments += @('-e', 'class', ($testClasses -join ','))
-        Write-Host 'Running the explicit 18-test non-UI subset; this does not verify phone UI.'
+        Write-Host 'Running the explicit non-UI repository/media/migration subset; this does not verify phone UI.'
     }
     $runnerArguments += 'org.greedycat.intelligence.test/androidx.test.runner.AndroidJUnitRunner'
     $runner = Start-Process -FilePath $adbPath -ArgumentList $runnerArguments -WindowStyle Hidden -PassThru -RedirectStandardOutput $testLog -RedirectStandardError $errorLog

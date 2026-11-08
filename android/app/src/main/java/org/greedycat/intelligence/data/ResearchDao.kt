@@ -11,6 +11,8 @@ interface ResearchDao {
     @Insert suspend fun insertMissing(values: List<MissingFieldEntity>)
     @Query("SELECT * FROM capture_sessions WHERE id = :id") suspend fun session(id: String): SessionEntity?
     @Query("SELECT * FROM rounds WHERE id = :id") suspend fun round(id: String): RoundEntity?
+    @Query("SELECT * FROM rounds WHERE contextId=:context AND mode=:mode AND roundNumber=:number LIMIT 1")
+    suspend fun naturalRound(context: String, mode: String, number: String): RoundEntity?
     @Query("SELECT * FROM round_missing_fields WHERE roundId = :id") suspend fun missing(id: String): List<MissingFieldEntity>
     @Transaction
     @Query("SELECT * FROM rounds WHERE provenance = :provenance ORDER BY startedAt DESC, id ASC LIMIT 100")

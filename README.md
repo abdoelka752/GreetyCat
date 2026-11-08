@@ -2,7 +2,7 @@
 
 An offline-first Android research companion with a local PC analysis server and browser dashboard. The system will collect authorized observations, estimate uncertain outcome probabilities, and evaluate predictions on later verified results. More computation does not guarantee a predictive advantage.
 
-**Current state:** shared data contracts, a local FastAPI service, a React diagnostic dashboard and a Kotlin/Compose Android companion. Android provides offline reference import, manual outcome review with correction history, draft storage and a separate synthetic demo workspace. Capture, automatic recognition, predictions and PC synchronization remain planned. No real gameplay dataset was supplied. See the task reports for verified checks and limits.
+**Current state:** shared data contracts, a local FastAPI service, a React diagnostic dashboard and a Kotlin/Compose Android companion. Android provides offline reference import, audited human outcome review, statistical research summaries and immutable prospective abstention checkpoints, with separate synthetic demo data. Verified live probability forecasts, capture, automatic recognition and PC synchronization remain planned. No real gameplay dataset was supplied. See the task reports for verified checks and limits.
 
 - [Task board and acceptance criteria](docs/TASKS.md)
 - [Current status and next task](docs/STATUS.md)
@@ -20,6 +20,7 @@ An offline-first Android research companion with a local PC analysis server and 
 - [Android build, emulator and storage instructions](android/README.md)
 - [T005 validation report](docs/reports/T005_ANDROID_FOUNDATION.md)
 - [T006 reference import and review report](docs/reports/T006_REFERENCE_REVIEW.md)
+- [T007 statistical research and checkpoint report](docs/reports/T007_STATISTICS_PREDICTIONS.md)
 - [Original project directive](docs/directives/ANDROID_MASTER.md)
 - [Original hybrid directive](docs/directives/HYBRID_MASTER.md)
 

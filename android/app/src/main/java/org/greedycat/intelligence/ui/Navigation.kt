@@ -74,6 +74,7 @@ fun ResearchNavigation(container: ResearchApplication) {
                         Text("Your evidence, on this device", style = MaterialTheme.typography.titleLarge)
                         Text("Import a reference and review its result. Drafts and human-confirmed results are kept separately.", color = WorkspaceMuted)
                         FilledTonalButton(onClick = { nav.navigate("history") }) { Text("View history") }
+                        OutlinedButton(onClick = { nav.navigate("research") }) { Text("Open research") }
                     }
                     ResearchCard {
                         StatusLine("Local storage", when (rounds) { RoundLoad.Loading -> "Opening…"; RoundLoad.Failed -> "Unavailable"; else -> "Ready" })
@@ -91,6 +92,12 @@ fun ResearchNavigation(container: ResearchApplication) {
             composable("history") {
                 val library = referenceModel(container.realReviews, "realReferences")
                 ReferenceLibrary(library) { evidence, round -> nav.navigate("review/$evidence/$round") }
+            }
+            composable("research") {
+                AnalysisScreen(analysisModel(container.realPredictions, "realAnalysis")) { nav.popBackStack() }
+            }
+            composable("demoResearch") {
+                AnalysisScreen(analysisModel(container.demoPredictions, "demoAnalysis")) { nav.popBackStack() }
             }
             composable("review/{evidenceId}/{roundId}") { backStack ->
                 ManualReviewScreen(container.realReviews, requireNotNull(backStack.arguments?.getString("evidenceId")),
@@ -150,12 +157,21 @@ fun ResearchNavigation(container: ResearchApplication) {
                         notice?.let { Text(it, fontSize = 12.sp, color = WorkspaceAmber) }
                     }
                     OutlinedButton(onClick = { nav.navigate("demoReferences") }) { Text("Review demo references") }
+                    OutlinedButton(onClick = { nav.navigate("demoResearch") }) { Text("Open demo research") }
+                    Text("Clearing demo rounds retains immutable checkpoint snapshots.", color = WorkspaceMuted)
                     RoundRows(rounds, demo = true)
                 }
             }
         }
     }
 }
+
+@Composable
+private fun analysisModel(repository: org.greedycat.intelligence.data.PredictionRepository, key: String): AnalysisViewModel =
+    viewModel(key = key, factory = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = AnalysisViewModel(repository) as T
+    })
 
 @Composable
 private fun referenceModel(repository: org.greedycat.intelligence.data.ReviewRepository, key: String): ReferenceViewModel =

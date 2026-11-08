@@ -1,6 +1,6 @@
-# Android research companion (T005–T006)
+# Android research companion (T005–T007)
 
-Kotlin/Compose companion application with offline Room storage, overview/history/settings navigation, reference import, manual result review and an explicit demo workspace. It does not capture a screen, recognize results automatically, generate predictions or synchronize with the PC yet.
+Kotlin/Compose companion application with offline Room storage, overview/history/settings navigation, reference import, audited manual review, statistical research summaries and an explicit demo workspace. Prospective manual checkpoints are immutable abstentions. Verified live probability forecasts, screen capture, automatic recognition and PC synchronization are not available yet.
 
 ## Toolchain
 
@@ -75,9 +75,9 @@ The application container owns two distinct Room files: `greedycat-research.db` 
 
 Room stores session identity, draft rounds and per-field missing-data flags in separate relational tables. Composite foreign keys enforce session/context/mode/provenance agreement; a unique context/mode/round-number index prevents duplicate numbered rounds while nullable unknown numbers remain unknown. Draft validation rejects invalid UUIDs/timestamps, inconsistent identities, mixed provenance and attempts to promote a draft directly to a confirmed/completed phase. Inserts compare existing content within a transaction, never replace it. Conflicts roll back the entire operation. T006 confirmation uses a separate append-only review chain.
 
-History and reference lists return at most 100 recent records per workspace. A pending draft is not a training outcome; confirmed history derives its latest value from human reviews. Prediction, Wager, wire export and synchronization entities remain future work. Complete Android contract ingestion/transport remains later work.
+History and reference lists return at most 100 recent records per workspace. A pending draft is not a training outcome; confirmed history derives its latest value from human reviews. T007 separately stores immutable local checkpoint snapshots. Wager, wire export and synchronization entities remain future work. Complete Android contract ingestion/transport remains later work.
 
-Room schema v1 was generated during T005 before adding the persisted compact-spacing preference. Schema v2 adds `workspace_preferences`; the explicit 1->2 migration preserves prior draft records and missing-field rows. T006 schema v3 adds references, local identity/context and review revisions through a 2->3 migration. All three generated schemas are tracked under `app/schemas/`. V1 is a development schema, not a previously released app. There is no destructive-migration fallback. Compact spacing is persisted through Room in the real workspace, and settings/database failures have visible messages.
+Room schema v1 was generated during T005 before adding the persisted compact-spacing preference. Schema v2 adds `workspace_preferences`; the explicit 1->2 migration preserves prior draft records and missing-field rows. T006 schema v3 adds references, local identity/context and review revisions through a 2->3 migration. T007 schema v4 adds the immutable checkpoint ledger through 3->4. All generated schemas are tracked under `app/schemas/`. V1 is a development schema, not a previously released app. There is no destructive-migration fallback. Compact spacing is persisted through Room in the real workspace, and settings/database failures have visible messages.
 
 The app explicitly pins serialization JSON/core to 1.8.1, matching Room's migration schema reader. Navigation otherwise resolves 1.7.3 in the app while the test APK resolves 1.8.1, causing an instrumentation classloader ABI error. Keep both runtimes aligned when upgrading.
 
@@ -91,7 +91,17 @@ Choose Review reference. Inspect the image or use the video's playback controls 
 
 Confirmed history shows the latest human review. Review or correct opens its audit trail. Corrections preserve prior values and require a reason; a stale predecessor cannot overwrite a newer review. Mode, round number and context cannot change as part of a correction. Each workspace retains a context for round uniqueness; use Start a new context only for a distinct/reset history. The reviewer is a local pseudonym, not authenticated identity. Clock trust is not established.
 
+When attaching a result to an existing prospective checkpoint, select its pending round in History before choosing Review reference. Its identity/mode/number remain fixed; the result is a new review, and the prior checkpoint remains unchanged.
+
 For sample references, use Settings -> Open demo workspace -> Review demo references. Those files and reviews stay SYNTHETIC and separate from real history. Clear demo records removes demo rounds/reviews; reference originals remain retained. Retention/deletion/export controls belong to T019.
+
+## Statistical research and prospective checkpoints (T007)
+
+Overview -> Open research shows historical summaries for the active context and selected mode. Compute historical summary rechecks evidence hashes and uses the review revisions known before its cutoff. Frequencies, Dirichlet posterior means (alpha 0.5/category), parameter SD and normalized entropy are conditional research statistics. Empty history produces no probability table. They do not demonstrate predictive skill or supply wagering advice.
+
+Manual prospective checkpoints require a current round number, an explicit unknown-result attestation and a local window from 5 to 120 seconds. This is not a verified game countdown. Every manual checkpoint ABSTAINS because live acquisition is unverified; no probability vector is issued. Historical/imported rounds cannot be reused. SQLite protects the complete record and dataset snapshot from update/deletion, including after outcomes/corrections or restarts. Clearing demo rounds retains the immutable ledger; start an explicit new context only for a distinct/reset history.
+
+Analysis verifies at most 1,000 reviewed rounds and 256 MiB of unique evidence per operation; exceeding limits abstains without silently truncating history. Prediction cards show the latest 100 records. The demo offers a labeled fixed-count mathematical example that stores no observations or predictions. Wire export, predictive calibration, trusted acquisition/clocks and deliberate ledger retention remain later work. See the [T007 report](../docs/reports/T007_STATISTICS_PREDICTIONS.md).
 
 ## Authorized physical-phone check
 
@@ -103,6 +113,6 @@ With exactly one authorized physical phone connected, and only after its owner a
 .\tools\test-android-phone.ps1 -RunInstrumentation -NonUiOnly
 ```
 
-The helper installs this app and its tests, keeps real data, uses temporary synthetic fixtures/databases for new review tests, and opens only MainActivity. Existing navigation tests clear demo sample rounds and reset compact spacing. No screen capture, gallery browsing, game control or device-wide settings changes occur. Results stay in ignored `artifacts/android/t006-phone-instrumentation.txt` or `t006-phone-storage.txt`; identifiers are not logged. Runs are bounded to five minutes (two for the non-UI subset), and only this project's runner/app is stopped on timeout. A successful subset is not a full UI pass. T006 verified 18 non-UI checks on the API 34 phone and all 21 checks on the API 36 emulator; the full phone UI run stalled and remains unverified.
+The helper installs this app and its tests, keeps real data, uses temporary synthetic fixtures/databases for new review tests, and opens only MainActivity. Existing navigation tests clear demo sample rounds and reset compact spacing. No screen capture, gallery browsing, game control or device-wide settings changes occur. Results stay in ignored `artifacts/android/t007-phone-instrumentation.txt` or `t007-phone-storage.txt`; identifiers are not logged. Runs are bounded to five minutes (two for the non-UI subset), and only this project's runner/app is stopped on timeout. A successful subset is not a full UI pass. T007 verified 29 non-UI checks on the API 34 phone and all 33 checks on the API 36 emulator, plus 20 JVM tests. The full phone UI run stalled in T006 and remains unverified; T007 did not rerun that unconfirmed phone UI suite.
 
 See the [T006 report](../docs/reports/T006_REFERENCE_REVIEW.md), [task board](../docs/TASKS.md) and [architecture](../docs/ARCHITECTURE.md).

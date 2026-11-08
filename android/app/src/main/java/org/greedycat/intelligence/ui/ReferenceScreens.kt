@@ -32,6 +32,9 @@ import java.util.UUID
 fun ReferenceLibrary(model: ReferenceViewModel, onReview: (String, String) -> Unit) {
     val state by model.state.collectAsStateWithLifecycle()
     var confirmContext by remember { mutableStateOf(false) }
+    var pendingRoundId by rememberSaveable { mutableStateOf<String?>(null) }
+    var choosingTarget by remember { mutableStateOf(false) }
+    val pending = state.history.filter { it.reviews.isEmpty() && it.round.mode != GameMode.UNKNOWN && it.round.roundNumber != null }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> uri?.let(model::import) }
     ReferenceColumn {
         Text("Reference library", style = MaterialTheme.typography.headlineMedium)
@@ -46,6 +49,20 @@ fun ReferenceLibrary(model: ReferenceViewModel, onReview: (String, String) -> Un
             Text("Context ${identity.contextId.take(8)} · keep this context for the same game history.", color = WorkspaceMuted)
             OutlinedButton(enabled = !state.busy, onClick = { confirmContext = true }) { Text("Start a new context") }
         }
+        if(pending.isNotEmpty() || pendingRoundId != null) {
+            Text("Attach a reference to a pending round, or leave New round selected.", color = WorkspaceMuted)
+            Box {
+                OutlinedButton(onClick = { choosingTarget = true }) {
+                    val selected = state.history.find { it.round.id == pendingRoundId }
+                    Text(if(pendingRoundId == null) "New round" else "Pending round ${selected?.round?.roundNumber ?: pendingRoundId?.take(8)}")
+                }
+                DropdownMenu(expanded = choosingTarget, onDismissRequest = { choosingTarget = false }) {
+                    DropdownMenuItem(text = { Text("New round") }, onClick = { pendingRoundId = null; choosingTarget = false })
+                    pending.forEach { row -> DropdownMenuItem(text = { Text("Round ${row.round.roundNumber} · ${row.round.mode}") },
+                        onClick = { pendingRoundId = row.round.id; choosingTarget = false }) }
+                }
+            }
+        }
         Text("Up to 100 recent references", style = MaterialTheme.typography.titleMedium)
         if (!state.loading && state.references.isEmpty()) Text("No references imported yet.")
         state.references.forEach { file ->
@@ -53,7 +70,7 @@ fun ReferenceLibrary(model: ReferenceViewModel, onReview: (String, String) -> Un
                 Text(if (file.durationMs == null) "Image reference" else "Video reference · ${file.durationMs / 1000}s")
                 Text("SHA-256 ${file.sha256}", style = MaterialTheme.typography.bodySmall)
                 Text("${file.provenance} · ${file.byteCount} bytes", color = WorkspaceMuted)
-                Button(enabled = !state.busy, onClick = { onReview(file.id, UUID.randomUUID().toString()) }) { Text("Review reference") }
+                Button(enabled = !state.busy, onClick = { onReview(file.id, pendingRoundId ?: UUID.randomUUID().toString()) }) { Text("Review reference") }
             }
         }
         Text("Confirmed history", style = MaterialTheme.typography.titleLarge)

@@ -2,7 +2,7 @@
 
 ## Current checkpoint
 
-T006: reference import and human outcome review complete; software checks PASS with physical-phone UI automation still incomplete. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T005 was pushed as `409963f4d71e84a69469433fd4454d5842df979c`. No tasks after T006 are complete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
+T007: local statistical research summaries and immutable prospective abstention checkpoints complete; software checks PASS. Commit/push is the final checkpoint action; verify the remote hash before claiming publication. T006 was pushed as `4d925c43e58dbec1464c70346061829f81fdf250`. No tasks after T007 are complete. Repository-local Git settings select abdoelka752 and disable interactive GitHub prompts.
 
 ## Completed scope
 
@@ -21,22 +21,27 @@ T006: reference import and human outcome review complete; software checks PASS w
 - Persisted compact-spacing setting, visible storage failure states, local icon/theme, pinned Android toolchain/wrapper and owned headless emulator test helpers. No game data is seeded in real history.
 - T006: user-selected image/video import with private original bytes, detected media type, bounded size/duration and SHA-256 provenance; offline image/video preview and explicit human outcome review.
 - Confirmed history, retained correction revisions with reason/reviewer/time/evidence, stale-edit rejection, explicit history contexts and tested Room 2->3 migration. Real and synthetic files/reviews remain separate.
+- T007: empirical frequencies, symmetric Dirichlet posterior means/parameter SD, normalized predictive entropy and explicit conditional-model assumptions; empty history shows no probability table.
+- Bounded evidence-verified snapshots use review revisions known before a cutoff, isolate mode/context/provenance and preserve lineage. Room v4 and SQL triggers protect immutable ANDROID abstention records across corrections, restarts and demo draft clearing. Natural archive identities cannot be reused within a context.
+- Manual targets retain unknown game phase/start time and an explicit unverified-acquisition label/attestation. They always ABSTAIN; no live probability forecast is issued. Local deadline and clock-consistency checks are not trusted acquisition or authenticated time.
 
 ## Validation evidence
 
-See [T006 report](reports/T006_REFERENCE_REVIEW.md): debug/test APK build **PASS**, JVM **11 tests PASS**, API 36 emulator **21 tests PASS**, API 34 physical phone **18 non-UI tests PASS**, app install/cold launch **PASS**. Lint **0 errors/13 upgrade warnings**. The user authorized app-only phone installation/testing. The app is installed and open on the phone; no gallery browsing or screen capture occurred.
+See [T007 report](reports/T007_STATISTICS_PREDICTIONS.md): debug/test APK build **PASS**, JVM **20 tests PASS**, API 36 emulator **33 tests PASS**, API 34 physical phone **29 non-UI tests PASS**, app update/cold launch **PASS**. Lint **0 errors/13 upgrade advisories**. Tests cover posterior/normalization, abstention, immutable SQL/persistence, cutoff/correction/target leakage, limits and migration with prior review rows. The updated app is open on the phone under the owner's existing app-testing authorization; no gallery browsing or screen capture occurred.
 
-Full phone UI automation stalled and was stopped at the five-minute limit: **BLOCKED / NOT PASSED**. Emulator UI checks pass. System picker/provider interaction, video playback controls, actual game references, visual screenshots, other devices and Android versions remain **NOT TESTED**. Do not equate emulator or phone-storage coverage with complete physical-device acceptance.
+Prior [T006 report](reports/T006_REFERENCE_REVIEW.md): 11 JVM, 21 emulator and 18 non-UI phone checks PASS, plus app installation/launch. Its full phone UI run stalled; T007 verifies the UI on the emulator and does not claim full phone UI completion.
+
+Full phone UI automation remains **BLOCKED / NOT PASSED** after the T006 five-minute timeout. Emulator UI checks pass. System picker/provider interaction, video playback controls, actual game references, visual screenshots, other devices and Android versions remain **NOT TESTED**. Do not equate emulator or phone-storage coverage with complete physical-device acceptance.
 
 Prior [T005 report](reports/T005_ANDROID_FOUNDATION.md): foundation build, 8 JVM and 12 emulator tests PASS. Its capture-consent rejection applies to the screenshot attempt recorded there; no new screen capture was attempted in T006. APK permissions remain limited to the app-scoped signature receiver permission.
 
 Prior [T004 report](reports/T004_DASHBOARD.md): **56 Python, 9 client and 7 browser tests PASS**, build/audit and actual Windows launch/HTTP/ADB smoke PASS. Those suites were not rerun for this Android-only source change. Documentation/provenance and staged whitespace checks are required before commit.
 
-Full Android wire-contract conformance, immutable prediction persistence, trusted clock mapping, screen/game visibility, capture, real gameplay/model performance and hybrid gameplay end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. Human outcome review is local and auditable, not automatic recognition or authenticated evidence interpretation.
+Full Android wire-contract conformance, verified live forecasts, trusted clock mapping, screen/game visibility, capture, real gameplay/model performance and hybrid gameplay end-to-end behavior: **NOT TESTED / NOT IMPLEMENTED**. Human outcome review and immutable local abstentions do not establish automatic recognition, authenticated evidence interpretation or demonstrated predictive skill.
 
 ## Next action
 
-T007 after the T006 commit/push checkpoint: empirical/Dirichlet estimates, uncertainty, abstention and immutable pre-result predictions with normalization/posterior/leakage tests. Historical confirmed imports cannot be used to manufacture pre-result predictions. No demonstrated predictive edge or verified payout matrix exists.
+T008 after the T007 commit/push checkpoint: explicit pairing/revocation and encrypted authenticated Android-PC transport, including unauthorized/expired-credential and certificate-trust tests. The server stays loopback-only until secure pairing/transport acceptance passes. No demonstrated predictive edge or verified payout matrix exists.
 
 ## Outstanding evidence
 

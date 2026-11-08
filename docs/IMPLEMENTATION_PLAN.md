@@ -1,6 +1,6 @@
 # File-level implementation plan
 
-Paths below are planned except T002/T003/T004/T005/T006, which are implemented as recorded in their rows. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
+Paths below are planned except T002/T003/T004/T005/T006/T007, which are implemented as recorded in their rows. Consult current official documentation for platform/API behavior and pin compatible versions in the task that introduces dependencies. Prefer one Android app module initially.
 
 | Task | Planned files | Primary responsibility |
 |---|---|---|
@@ -10,7 +10,7 @@ Paths below are planned except T002/T003/T004/T005/T006, which are implemented a
 | T005 | `android/settings.gradle.kts`, `build.gradle.kts`, `gradle/libs.versions.toml`, Gradle wrapper, `app/build.gradle.kts`, `app/src/main/AndroidManifest.xml` | Reproducible pinned Android build and manifest |
 | T005 | `android/app/src/main/java/org/greedycat/intelligence/MainActivity.kt`, `ui/Navigation.kt`, `ui/Theme.kt`, `data/ResearchDatabase.kt`, `data/Entities.kt`, `data/ResearchRepository.kt` | Navigation, injection boundary, Room schema and transactions |
 | T006 (implemented) | Android `ingestion/ReferenceImporter.kt`, `domain/ReviewModels.kt`, `data/ReviewEntities.kt`, `data/ReviewRepository.kt`, `ui/ReferenceViewModel.kt`, `ui/ReferenceScreens.kt`, schema v3, JVM/instrumentation tests; `tools/test-android-phone.ps1` | Bounded private reference import, hashes/media checks, attested manual review, append-only corrections, context and confirmed history; UI packages retained under the existing bounded app structure |
-| T007 | Android `statistics/DirichletEstimator.kt`, `statistics/Uncertainty.kt`, `domain/PredictionLocker.kt`, `feature/live/LiveScreen.kt` | Standalone estimates and immutable, pre-result predictions |
+| T007 (implemented) | Android `statistics/DirichletEstimator.kt`, `domain/PredictionPolicy.kt`, `data/PredictionEntities.kt`, `PredictionSchema.kt`, `PredictionRepository.kt`, `ui/AnalysisViewModel.kt`, `AnalysisScreen.kt`, schema v4 and statistical/locking/migration/UI tests | Empirical/Dirichlet research summaries, analytical SD/entropy, as-of snapshots and immutable prospective manual abstentions; verified acquisition/live forecasts remain gated |
 | T008 | Backend `security/pairing.py`, `security/sessions.py`, `api/pairing.py`; Android `connectivity/PairingClient.kt` | Pair/revoke, secure token storage, encrypted transport and certificate trust |
 | T009 | Android `data/Outbox.kt`, `connectivity/SyncWorker.kt`; backend `storage/schema.sql`, `storage/migrations/`, `sync/ingest.py`, `sync/conflicts.py`, `api/events.py` | Durable retry-safe delivery, transactions, corrections and audit |
 | T010 | Backend `statistics/baseline.py`, `api/rounds.py`, `api/predictions.py`; web `pages/Live.tsx`, `pages/History.tsx`; Android `connectivity/ResultGate.kt`; `tests/integration/` | Roundtrip integration, independent PC estimate and late/wrong-round result handling |
